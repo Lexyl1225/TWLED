@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+	<title>TWLED Settings</title>
+	<script src="common.js" type="text/javascript"></script>
+	<script>
+		function S() {
+			getLoc();
+			loadJS(getURL('/settings/s.js?p=0'), false);	// If we set async false, file is loaded and executed, then next statement is processed
+		}
+	</script>
+
+
+	<style>
+		html {
+			--h: clamp(44px, 7vh, 60px);
+			--acc: #22d3ee;
+			--ag: rgba(34, 211, 238, .35);
+			min-height: 100%;
+		}
+		body {
+			text-align: center;
+			background:
+				radial-gradient(70vw 60vh at 12% -10%, rgba(34, 211, 238, .1), transparent 70%) fixed,
+				radial-gradient(70vw 60vh at 100% 110%, rgba(139, 92, 246, .13), transparent 70%) fixed,
+				#060b18;
+			margin: 0;
+			padding: 1vh 0 3vh;
+		}
+		button {
+			background: #101a2e;
+			color: #e8eefa;
+			font-family: "Segoe UI", Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+			display: block;
+			border: 1px solid rgba(148, 178, 230, .22);
+			border-radius: 14px;
+			font-size: clamp(15px, 2.4vh, 18px);
+			letter-spacing: .04em;
+			height: var(--h);
+			width: calc(100% - 40px);
+			max-width: 520px;
+			margin: 1.4vh auto 0;
+			cursor: pointer;
+			transition: border-color .2s, box-shadow .2s, color .2s;
+		}
+		button:hover {
+			border-color: var(--acc);
+			box-shadow: 0 0 14px var(--ag);
+			color: var(--acc);
+		}
+		#b {
+			background: rgba(34, 211, 238, .13);
+			border-color: var(--acc);
+		}
+		/* Make the Upcoming button match the style of the others */
+		#upcoming-btn {
+			border-color: #8b5cf6;   /* different color so you see it’s special */
+			color: #c4b5fd;
+		}
+	</style>
+</head>
+<body onload="S()">
+<button type=submit id="b" onclick="window.location=getURL('/')">Back</button>
+<button type="submit" onclick="window.location=getURL('/settings/wifi')">WiFi Setup</button>
+<button type="submit" onclick="window.location=getURL('/settings/leds')">LED Preferences</button>
+<button id="2dbtn" type="submit" onclick="window.location=getURL('/settings/2D')">2D Configuration</button>
+<button type="submit" onclick="window.location=getURL('/settings/ui')">User Interface</button>
+<button id="dmxbtn" style="display:none;" type="submit" onclick="window.location=getURL('/settings/dmx')">DMX Output</button>
+<button type="submit" onclick="window.location=getURL('/settings/sync')">Sync Interfaces</button>
+<button type="submit" onclick="window.location=getURL('/settings/time')">Time & Macros</button>
+<button type="submit" onclick="window.location=getURL('/settings/um')">Usermods</button>
+<button type="submit" onclick="window.location=getURL('/settings/sec')">Security & Updates</button>
+
+<!-- This one loads upcoming.html inside the same page (no freeze, no reload) -->
+<button type="submit" id="upcoming-btn" onclick="window.location=getURL('/settings/up')">Upcoming</button>
+
+<!-- Area where upcoming.html content will appear -->
+<div id="content-area"></div>
+</body>
+</html>

@@ -1,0 +1,152 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Upcoming</title>
+
+    common.js</script>
+    <script>
+      function S() {
+        getLoc();
+        loadJS(getURL('/settings/s.js?p=12'), false);
+        if (loc) d.Sf.action = getURL('/settings/up');
+      }
+    </script>
+    style.css
+
+    <style>
+        
+          body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: url('snowy-background.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+            text-align: center;
+          }
+
+
+        .overlay {
+            background: rgba(100, 0, 0, 0.4);
+            min-height: 100vh;
+            padding: 50px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        h1 {
+            font-size: 4em;
+            background: linear-gradient(90deg, #ff0000, #ff9900, #ffff00, #33cc33, #3399ff, #9933ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0 0 20px 0;
+        }
+
+        /* Animated Merry Christmas */
+        .christmas-text {
+            font-size: 3em;
+            font-weight: bold;
+            margin-bottom: 30px;
+            background: linear-gradient(90deg, #ff0000, #00ff00, #ff0000);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            0% { text-shadow: 0 0 10px #ff0000, 0 0 20px #ff9900; }
+            100% { text-shadow: 0 0 20px #00ff00, 0 0 40px #ffff00; }
+        }
+
+        p {
+            font-size: 1.5em;
+            text-shadow: 2px 2px 4px #000;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            margin: 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #fff;
+            background: linear-gradient(45deg, #ff0066, #ffcc00, #00ccff);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+        }
+
+        .back-btn {
+            background: #333;
+        }
+
+        .back-btn:hover {
+            background: #555;
+        }
+
+        /* Snow effect */
+        .snowflake {
+            position: fixed;
+            top: -10px;
+            color: #fff;
+            font-size: 1em;
+            animation: fall linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(100vh); }
+        }
+    </style>
+</head>
+
+<body onload="S()">
+    <!-- Snowflakes -->
+    <div id="snow-container"></div>
+
+    <div class="overlay">
+        <h1>Upcoming</h1>
+        <div class="christmas-text">🎄 Merry Christmas 🎄</div>
+        <p>Stay tuned for exciting events and updates from Tom's World!</p>
+        
+        #Learn More</a>
+        <button type="button" class="btn back-btn" onclick="B()">Back</button>
+        <button type="button" onclick="B()">Back</button>
+    </div>
+
+    <script>
+        // Generate snowflakes dynamically
+        const snowContainer = document.getElementById('snow-container');
+        for (let i = 0; i < 50; i++) {
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            snowflake.textContent = '❄';
+            snowflake.style.left = Math.random() * 100 + 'vw';
+            snowflake.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            snowflake.style.fontSize = (Math.random() * 10 + 10) + 'px';
+            snowflake.style.opacity = Math.random();
+            snowContainer.appendChild(snowflake);
+        }
+    </script>
+</body>
+</html>
