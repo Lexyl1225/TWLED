@@ -493,7 +493,11 @@ static_assert(TWLED_MAX_BUSSES <= 32, "TWLED_MAX_BUSSES exceeds hard limit");
 #endif
 
 #ifndef MAX_LEDS_PER_BUS
-#define MAX_LEDS_PER_BUS 2048   // may not be enough for fast LEDs (i.e. APA102)
+  #if defined(CONFIG_IDF_TARGET_ESP32)
+    #define MAX_LEDS_PER_BUS 2400 // classic ESP32 only
+  #else
+    #define MAX_LEDS_PER_BUS 2048 // may not be enough for fast LEDs (i.e. APA102)
+  #endif
 #endif
 
 // string temp buffer (now stored in stack locally)
