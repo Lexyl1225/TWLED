@@ -1024,6 +1024,71 @@ void serializeNetworks(JsonObject root)
   WiFi.scanNetworks(true); // immediately start the next asynchronous scan
 }
 
+// pin capability flags, must match CAP_* in data/settings_pininfo.htm
+#define PIN_CAP_OUTPUT 0x01
+#define PIN_CAP_TOUCH  0x02
+#define PIN_CAP_ADC1   0x04
+#define PIN_CAP_ADC2   0x08
+#define PIN_CAP_STRAP  0x10
+
+static uint8_t getPinCaps(unsigned gpio)
+{
+  uint8_t caps = PinManager::isPinOk(gpio, true) ? PIN_CAP_OUTPUT : 0;
+
+  #if defined(CONFIG_IDF_TARGET_ESP32C3)
+  constexpr uint64_t strapPins = BIT64(2) | BIT64(8) | BIT64(9);
+  #elif defined(CONFIG_IDF_TARGET_ESP32S3)
+  constexpr uint64_t strapPins = BIT64(0) | BIT64(3) | BIT64(45) | BIT64(46);
+  #elif defined(CONFIG_IDF_TARGET_ESP32S2)
+  constexpr uint64_t strapPins = BIT64(0) | BIT64(45) | BIT64(46);
+  #elif defined(ARDUINO_ARCH_ESP32)
+  constexpr uint64_t strapPins = BIT64(0) | BIT64(2) | BIT64(5) | BIT64(12) | BIT64(15);
+  #else
+  constexpr uint64_t strapPins = (1ULL << 0) | (1ULL << 2) | (1ULL << 15);
+  #endif
+  if (strapPins & (1ULL << gpio)) caps |= PIN_CAP_STRAP;
+
+  #ifdef ARDUINO_ARCH_ESP32
+  int adcChannel = digitalPinToAnalogChannel(gpio);
+  if (adcChannel >= 0) caps |= (adcChannel < SOC_ADC_MAX_CHANNEL_NUM) ? PIN_CAP_ADC1 : PIN_CAP_ADC2;
+    #ifndef CONFIG_IDF_TARGET_ESP32C3
+  if (digitalPinToTouchChannel(gpio) >= 0) caps |= PIN_CAP_TOUCH;
+    #endif
+  #endif
+  return caps;
+}
+
+void serializePins(JsonObject root)
+{
+  JsonArray pins = root.createNestedArray(F("pins"));
+  for (unsigned gpio = 0; gpio < TWLED_NUM_PINS; gpio++) {
+    if (!PinManager::isPinOk(gpio, false)) continue; // reserved pins (flash, PSRAM, not connected) are not usable
+
+    JsonObject pin = pins.createNestedObject();
+    pin["p"] = gpio;
+    pin["c"] = getPinCaps(gpio);
+    if (!PinManager::isPinAllocated(gpio)) continue;
+
+    pin["a"] = true;
+    pin["o"] = static_cast<uint8_t>(PinManager::getPinOwner(gpio));
+    for (unsigned b = 0; b < TWLED_MAX_BUTTONS; b++) {
+      if (btnPin[b] != (int)gpio || buttonType[b] <= BTN_TYPE_RESERVED) continue;
+      pin["t"] = buttonType[b];
+      pin["n"] = b;
+      // live state for digital inputs only: touch and analog reads are not safe from the web server task
+      switch (buttonType[b]) {
+        case BTN_TYPE_PUSH:
+        case BTN_TYPE_PUSH_ACT_HIGH:
+        case BTN_TYPE_SWITCH:
+        case BTN_TYPE_PIR_SENSOR:
+          pin["s"] = isButtonPressed(b);
+          break;
+      }
+      break;
+    }
+  }
+}
+
 void serializeNodes(JsonObject root)
 {
   JsonArray nodes = root.createNestedArray("nodes");
@@ -1100,7 +1165,7 @@ class LockedJsonResponse: public AsyncJsonResponse {
 void serveJson(AsyncWebServerRequest* request)
 {
   enum class json_target {
-    all, state, info, state_info, nodes, effects, palettes, fxdata, networks, config
+    all, state, info, state_info, nodes, effects, palettes, fxdata, networks, config, pins
   };
   json_target subJson = json_target::all;
 
@@ -1114,6 +1179,7 @@ void serveJson(AsyncWebServerRequest* request)
   else if (url.indexOf(F("fxda"))  > 0) subJson = json_target::fxdata;
   else if (url.indexOf(F("net"))   > 0) subJson = json_target::networks;
   else if (url.indexOf(F("cfg"))   > 0) subJson = json_target::config;
+  else if (url.indexOf(F("pins"))  > 0) subJson = json_target::pins;
   #ifdef TWLED_ENABLE_JSONLIVE
   else if (url.indexOf("live")     > 0) {
     serveLiveLeds(request);
@@ -1157,6 +1223,8 @@ void serveJson(AsyncWebServerRequest* request)
       serializeNetworks(lDoc); break;
     case json_target::config:
       serializeConfig(lDoc); break;
+    case json_target::pins:
+      serializePins(lDoc); break;
     case json_target::state_info:
     case json_target::all:
       JsonObject state = lDoc.createNestedObject("state");

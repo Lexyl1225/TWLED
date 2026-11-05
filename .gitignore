@@ -15,6 +15,7 @@ platformio_override.ini
 replace_fs.py
 twled-update.sh
 
+pio-twled_env/
 /build_output/
 /node_modules/
 /logs/

@@ -670,7 +670,7 @@ void serveSettingsJS(AsyncWebServerRequest* request)
     return;
   }
   byte subPage = request->arg(F("p")).toInt();
-  if (subPage > 10) {
+  if (subPage > SUBPAGE_PINS) {
     request->send_P(501, FPSTR(CONTENT_TYPE_JAVASCRIPT), PSTR("alert('Settings for this request are not implemented.');"));
     return;
   }
@@ -699,6 +699,7 @@ void serveSettings(AsyncWebServerRequest* request, bool post) {
     else if (url.indexOf(F(".css")) > 0) subPage = SUBPAGE_CSS;
     else if (url.indexOf(F("wifi")) > 0) subPage = SUBPAGE_WIFI;
     else if (url.indexOf(F("leds")) > 0) subPage = SUBPAGE_LEDS;
+    else if (url.indexOf(F("pins")) > 0) subPage = SUBPAGE_PINS;
     else if (url.indexOf(F("ui"))   > 0) subPage = SUBPAGE_UI;
     else if (url.indexOf(  "sync")  > 0) subPage = SUBPAGE_SYNC;
     else if (url.indexOf(  "time")  > 0) subPage = SUBPAGE_TIME;
@@ -784,6 +785,7 @@ void serveSettings(AsyncWebServerRequest* request, bool post) {
     case SUBPAGE_TIME    :  content = PAGE_settings_time; len = PAGE_settings_time_length; break;
     case SUBPAGE_SEC     :  content = PAGE_settings_sec;  len = PAGE_settings_sec_length;  break;
     case SUBPAGE_UP      :  content = PAGE_settings_up;   len = PAGE_settings_up_length;   break;
+    case SUBPAGE_PINS    :  content = PAGE_settings_pininfo; len = PAGE_settings_pininfo_length; break;
 
 #ifdef TWLED_ENABLE_DMX
     case SUBPAGE_DMX     :  content = PAGE_settings_dmx;  len = PAGE_settings_dmx_length;  break;

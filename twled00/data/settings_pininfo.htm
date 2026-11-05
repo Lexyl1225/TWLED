@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+	<title>Pin Info</title>
+	<script src="common.js" type="text/javascript"></script>
+	<script>
+		// PinOwner values, see pin_manager.h
+		const owners = {
+			0x81:"Ethernet", 0x82:"LED (digital)", 0x83:"LED (on/off)", 0x84:"LED (PWM)", 0x85:"Button", 0x86:"IR receiver",
+			0x87:"Relay", 0x88:"SPI RAM", 0x89:"Debug output", 0x8A:"DMX output", 0x8B:"I2C", 0x8C:"SPI", 0x8D:"DMX input", 0x8E:"HUB75",
+			1:"Usermod", 2:"Usermod: Example", 3:"Usermod: Temperature", 5:"Usermod: PIR", 6:"Usermod: IMU", 7:"Usermod: Display",
+			8:"Usermod: Rotary encoder", 13:"Usermod: Multi relay", 14:"Usermod: Staircase", 18:"Usermod: Battery", 20:"Usermod: BH1750",
+			22:"Usermod: RGB encoder", 23:"Usermod: An-Penta", 30:"Usermod: BME280", 32:"Usermod: Audio Reactive", 37:"Usermod: SD card",
+			38:"Usermod: PWM outputs", 43:"Usermod: Dusk/Dawn", 48:"Usermod: MAX17048", 49:"Usermod: BME68X", 54:"Usermod: Dice tray"
+		};
+		// BTN_TYPE values, see const.h
+		const btnTypes = {2:"Push", 3:"Push, active high", 4:"Switch", 5:"PIR sensor", 6:"Touch", 7:"Analog", 8:"Analog, inverted", 9:"Touch switch"};
+		// pin capability flags, must match PIN_CAP_* in json.cpp
+		const CAP_OUTPUT = 1, CAP_TOUCH = 2, CAP_ADC1 = 4, CAP_ADC2 = 8, CAP_STRAP = 16;
+		var lastPins = null;
+
+		function S() {
+			getLoc();
+			loadJS(getURL('/settings/s.js?p=11'), false, undefined, loadPins); // provides d.um_p (usermod pin reservations)
+		}
+		function getOwnerName(o, t, n) {
+			if (o == 0x85 && t in btnTypes) return `Button ${n} (${btnTypes[t]})`;
+			return owners[o] || (o ? (o < 0x80 ? "Usermod" : "Reserved") : "In use");
+		}
+		function getCaps(c) {
+			var notes = [];
+			if (!(c & CAP_OUTPUT)) notes.push("Input only");
+			if (c & CAP_TOUCH)     notes.push("Touch");
+			if (c & CAP_ADC1)      notes.push("ADC1");
+			if (c & CAP_ADC2)      notes.push("ADC2 (not with WiFi)");
+			if (c & CAP_STRAP)     notes.push("Boot pin");
+			return notes.join(", ") || "Digital I/O";
+		}
+		function showPins(pins) {
+			if (!pins.length) { gId('pins').textContent = "No pins available."; return; }
+			var cn = '<table><tr><th>Pin</th><th>Used by</th><th>Pin Notes</th></tr>';
+			for (var p of pins) {
+				var st = typeof p.s === 'undefined' ? '' : `<span class="bs${p.s?' on':''}"></span>`; // live state of digital buttons
+				var ow = p.a ? getOwnerName(p.o, p.t, p.n)
+				       : (d.um_p && d.um_p.includes(p.p)) ? "Usermod (reserved)" : '<span class="free">Available</span>';
+				cn += `<tr><td>GPIO${p.p}</td><td>${st}${ow}</td><td>${getCaps(p.c)}</td></tr>`;
+			}
+			gId('pins').innerHTML = cn + '</table>';
+		}
+		function loadPins() {
+			if (d.hidden) { setTimeout(loadPins, 500); return; } // don't load the device from a background tab
+			fetch(getURL('/json/pins'), {method:'get'})
+			.then(r => { if (!r.ok) throw new Error(r.status); return r.text(); })
+			.then(t => {
+				if (t !== lastPins) { showPins(JSON.parse(t).pins || []); lastPins = t; } // keep the table stable unless something changed
+			})
+			.catch(e => {
+				if (lastPins === null) gId('pins').textContent = "Error loading pin info"; // otherwise keep showing the last good table
+			})
+			.finally(() => setTimeout(loadPins, 500)); // wait for the response so requests never pile up on the device
+		}
+	</script>
+	<style>
+		@import url("style.css");
+		body {
+			padding: 0 16px 16px;
+		}
+		#pins {
+			margin: 0 auto;
+			max-width: 620px;
+		}
+		table {
+			background: var(--pn);
+			border: 1px solid var(--bd);
+			border-radius: 12px;
+			border-spacing: 0;
+			font-size: 15px;
+			margin: 8px 0;
+			overflow: hidden;
+			text-align: left;
+			width: 100%;
+		}
+		th, td {
+			border-top: 1px solid var(--bd);
+			line-height: 1.4;
+			padding: 8px 12px;
+		}
+		th {
+			background: var(--in);
+			border-top: 0;
+			color: var(--acc);
+			font-weight: 600;
+		}
+		td:first-child {
+			white-space: nowrap;
+		}
+		.free {
+			color: var(--acc);
+		}
+		.bs { /* button state dot */
+			background: #8493b3;
+			border-radius: 50%;
+			display: inline-block;
+			height: 10px;
+			margin-right: 8px;
+			width: 10px;
+		}
+		.bs.on {
+			background: var(--acc);
+			box-shadow: 0 0 8px var(--ag);
+		}
+		@media screen and (max-width: 480px) {
+			table {
+				font-size: 13px;
+			}
+			th, td {
+				padding: 6px 8px;
+			}
+		}
+	</style>
+</head>
+<body onload="S()">
+	<button type="button" onclick="B()">Back</button>
+	<h2>Pin Info</h2>
+	<div id="pins">Loading...</div>
+	<button type="button" onclick="B()">Back</button>
+</body>
+</html>
