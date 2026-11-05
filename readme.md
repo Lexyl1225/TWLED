@@ -44,7 +44,7 @@ Originally created by [Aircoookie](https://github.com/Aircoookie)
 - Alexa voice control (including dimming and color)  
 - Sync to Philips hue lights  
 - Adalight (PC ambilight via serial) and TPM2  
-- Sync color of multiple WLED devices (UDP notifier)  
+- Sync color of multiple WLED/TWLED devices (UDP notifier)  
 - Infrared remotes (24-key RGB, receiver required)  
 - Simple timers/schedules (time from NTP, timezones/DST supported)  
 
