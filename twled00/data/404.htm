@@ -1,47 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<meta content='width=device-width' name='viewport'>
-		<meta name="theme-color" content="#222222">
+		<meta content="width=device-width, initial-scale=1" name="viewport">
+		<meta name="theme-color" content="#060b18">
 		<title>Not found</title>
 		<style>
-			body {
-				font-family: Verdana, Helvetica, sans-serif;
-				text-align: center;
-				background-color: #222;
-				margin: 0;
-				color: #fff;
-			}
-
-			img {
-				width: 400px;
-				max-width: 50%;
-				image-rendering: pixelated;
-				image-rendering: crisp-edges;
-				margin: 25px 0 -10px 0;
-			}
-		
-			button {
-				outline: none;
-				cursor: pointer;
-				padding: 8px;
-				margin: 10px;
-				width: 230px;
-				text-transform: uppercase;
-				font-family: helvetica;
-				font-size: 19px;
-				background-color: #333;
-				color: white;
-				border: 0px solid white;
-				border-radius: 25px;
-			}
+			:root{color-scheme:dark}
+			body{box-sizing:border-box;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;padding:16px;font-family:"Segoe UI",Roboto,"Helvetica Neue",Helvetica,Arial,sans-serif;line-height:1.5;text-align:center;color:#e8eefa;background:radial-gradient(70vw 60vh at 12% -10%,rgba(34,211,238,.1),transparent 70%) fixed,radial-gradient(70vw 60vh at 100% 110%,rgba(139,92,246,.13),transparent 70%) fixed,#060b18}
+			.card{box-sizing:border-box;width:100%;max-width:520px;padding:24px 20px;background:#101a2e;border:1px solid rgba(148,178,230,.22);border-radius:14px}
+			h1{margin:0 0 4px;font-size:1.6rem;font-weight:600;letter-spacing:.05em;color:#22d3ee}
+			p{margin:0 0 8px}
+			.btn{display:block;margin:8px 0 16px;padding:10px 16px;font-size:17px;text-decoration:none;color:#e8eefa;background:#1a2740;border:1px solid rgba(148,178,230,.22);border-radius:12px;transition:border-color .2s,box-shadow .2s}
+			.btn:hover,.btn:focus{border-color:#22d3ee;box-shadow:0 0 12px rgba(34,211,238,.35);outline:0}
+			.pri{background:rgba(34,211,238,.13);border-color:#22d3ee}
+			.btn{margin:16px 0 0}
 		</style>
 	</head>
 	<body>
-		<img alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAbUExURQAAAAB81gCU/zKq/////9bW1oCAgGhoaAAAAGPLX8AAAAAJdFJOU///////////AFNPeBIAAAAJcEhZcwAADsAAAA7AAWrWiQkAAACdSURBVDhPxc9bDoUgEANQebP/FUuHMjBGY/B+3EYR7RH0qC/ZBc6HwCljgHO+xZIVSI2sYgHaG7EBWh8jWoxTrCBFdDJ+BD4lbIHxAcz8APAVLTsrZE4eQD5qzt3cAFTYokC4YCN9Gybgu4yAQtBFLQXHuHABA7JMeOEC/E0W5uy9gv4vo5QHK2i7yq2C8UABM4HmL+CSTXCTF1DrCX6+Gp9zB5dsAAAAAElFTkSuQmCC">
-		<h1>404 Not Found</h1>
-		<b>Akemi does not know where you are headed...</b><br><br>
-		<button onclick="window.location.href='../?sliders'">Back to controls</button>
+		<main class="card">
+			<h1>404 Not Found</h1>
+			<p><b>The page you are looking for does not exist.</b></p>
+			<a class="btn pri" href="../?sliders">Back to controls</a>
+		</main>
 	</body>
 </html>

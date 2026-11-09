@@ -76,9 +76,6 @@ button.sml {
   min-width: 40px;
   margin: 0 0 0 10px;
 }
-#scan {
-  margin-top: -10px;
-}
 .toprow {
   top: 0;
   position: sticky;
@@ -265,4 +262,118 @@ td {
   #btns select {
     width: 144px;
   }
+}
+/* card layout for settings pages */
+.card {
+  box-sizing: border-box;
+  background: var(--pn);
+  border: 1px solid var(--bd);
+  border-radius: 14px;
+  width: calc(100% - 32px);
+  max-width: 720px;
+  margin: 0 auto 16px;
+  padding: 16px 20px;
+  text-align: left;
+  line-height: 1.5;
+  scroll-margin-top: 72px;
+}
+.card h3 {
+  font-size: 1.05rem;
+  margin: 0 0 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--bd);
+}
+.card h4 {
+  color: var(--acc);
+  font-weight: 600;
+  margin: 14px 0 4px;
+}
+.card h4:first-child {
+  margin-top: 0;
+}
+.card hr.sml {
+  width: auto;
+  margin: 10px 0;
+}
+.card input[type="button"] {
+  cursor: pointer;
+}
+.card i {
+  font-size: .92em;
+  opacity: .8;
+}
+.card i.warn {
+  opacity: 1;
+}
+.card i.n {
+  display: block;
+  padding: 2px 0 6px;
+}
+.card div.warn {
+  background: rgba(251, 191, 36, .08);
+  border: 1px solid rgba(251, 191, 36, .25);
+  border-radius: 10px;
+  margin: 8px 0;
+  padding: 8px 12px;
+}
+span.l::after {
+  content: ":";
+}
+/* field row: label on the left, control on the right */
+.f {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px 12px;
+  min-height: 32px;
+  padding: 4px 0;
+}
+.f:has(> input[type="checkbox"]) {
+  flex-wrap: nowrap;
+}
+.f input[type="checkbox"] {
+  flex: none;
+  margin: 0 5px 0 12px;
+}
+.f input[type="text"], .f input[type="password"], .f select {
+  max-width: 100%;
+}
+.ctl {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+}
+.r {
+  padding: 4px 0;
+}
+.sub {
+  background: var(--bg);
+  border: 1px solid var(--bd);
+  border-radius: 12px;
+  margin: 10px 0;
+  padding: 10px 14px;
+}
+.ctr {
+  text-align: center;
+}
+.tbl {
+  overflow-x: auto;
+  text-align: center;
+}
+.tbl > table {
+  margin: 0 auto;
+}
+@media screen and (max-width: 480px) {
+  .card {
+    width: calc(100% - 16px);
+    padding: 12px 14px;
+  }
+  .sub {
+    padding: 8px 10px;
+  }
+}
+#gen:empty {
+  display: none;
 }

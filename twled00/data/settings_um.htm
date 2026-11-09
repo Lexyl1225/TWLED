@@ -26,11 +26,12 @@
 			urows="";
 			if (isO(umCfg)) {
 				for (const [k,o] of Object.entries(umCfg)) {
-					urows += `<hr><h3>${k}</h3>`;
+					urows += `<div class="card"><h3>${k}</h3>`;
 					addField(k,'unknown',o);
+					urows += '</div>';
 				}
 			}
-			if (urows==="") urows = "Usermods configuration not found.<br>Press <i>Save</i> to initialize defaults.";
+			if (urows==="") urows = '<div class="card">Usermods configuration not found.<br>Press <i>Save</i> to initialize defaults.</div>';
 			gId("um").innerHTML = urows;
 			loadJS(getURL('/settings/s.js?p=8'), false, ()=>{
 				d.max_gpio = 50;
@@ -50,7 +51,7 @@
 			gId('lserr').style.display = "inline";
 			console.log(error);
 		});
-		if (!numM) gId("um").innerHTML = "No Usermods installed.";
+		if (!numM) gId("um").innerHTML = '<div class="card">No Usermods installed.</div>';
 		if (loc) d.Sf.action = getURL('/settings/um');
 	}
 	function check(o,k) {   // input object, pin owner key
@@ -108,7 +109,7 @@
 	}
 	function addField(k,f,o,a=false) {  //key, field, (sub)object, isArray
 		if (isO(o)) {
-			urows += '<hr class="sml">';
+			if (f!=='unknown') urows += '<hr class="sml">'; // the card title already separates the first group
 			if (f!=='unknown' && !k.includes(":")) urows += `<p><u>${initCap(f)}</u></p>`; //show group title
 			for (const [s,v] of Object.entries(o)) {
 				// possibility to nest objects (only 1 level)
@@ -281,20 +282,26 @@
 		<span id="lserr" style="color:red; display:none">&#9888; Could not load configuration.</span><hr>
 		</div>
 		<h2>Usermod Setup</h2>
-		Global I<sup>2</sup>C GPIOs (HW)<br>
-		<i class="warn">(change requires reboot!)</i><br>
-		SDA:<input type="number" min="-1" max="48" name="SDA" onchange="check(this,'if')" class="s" placeholder="SDA">
-		SCL:<input type="number" min="-1" max="48" name="SCL" onchange="check(this,'if')" class="s" placeholder="SCL">
-		<hr class="sml">
-		Global SPI GPIOs (HW)<br>
-		<i class="warn">(only changable on ESP32, change requires reboot!)</i><br>
-		MOSI:<input type="number" min="-1" max="48" name="MOSI" onchange="check(this,'if')" class="s" placeholder="MOSI">
-		MISO:<input type="number" min="-1" max="48" name="MISO" onchange="check(this,'if')" class="s" placeholder="MISO">
-		SCLK:<input type="number" min="-1" max="48" name="SCLK" onchange="check(this,'if')" class="s" placeholder="SCLK">
-		<hr class="sml">
-		Reboot after save? <input type="checkbox" name="RBT"><br>
-		<div id="um">Loading settings...</div>
-		<hr><button type="button" onclick="B()">Back</button><button type="submit">Save</button>
+		<div class="card">
+			<h3>Global GPIOs</h3>
+			<h4>Global I<sup>2</sup>C GPIOs (HW)</h4>
+			<i class="warn n">(change requires reboot!)</i>
+			<div class="r">
+				SDA:<input type="number" min="-1" max="48" name="SDA" onchange="check(this,'if')" class="s" placeholder="SDA">
+				SCL:<input type="number" min="-1" max="48" name="SCL" onchange="check(this,'if')" class="s" placeholder="SCL">
+			</div>
+			<h4>Global SPI GPIOs (HW)</h4>
+			<i class="warn n">(only changable on ESP32, change requires reboot!)</i>
+			<div class="r">
+				MOSI:<input type="number" min="-1" max="48" name="MOSI" onchange="check(this,'if')" class="s" placeholder="MOSI">
+				MISO:<input type="number" min="-1" max="48" name="MISO" onchange="check(this,'if')" class="s" placeholder="MISO">
+				SCLK:<input type="number" min="-1" max="48" name="SCLK" onchange="check(this,'if')" class="s" placeholder="SCLK">
+			</div>
+			<hr class="sml">
+			<label class="f">Reboot after save? <input type="checkbox" name="RBT"></label>
+		</div>
+		<div id="um"><div class="card">Loading settings...</div></div>
+		<button type="button" onclick="B()">Back</button><button type="submit">Save</button>
 	</form>
 </body>
 

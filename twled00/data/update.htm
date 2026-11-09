@@ -52,30 +52,31 @@
 <body onload="GetV();">
 	<h2>TWLED Software Update</h2>
 	<form method='POST' action='./update' id='upd' enctype='multipart/form-data' onsubmit="toggle('upd')">
-		Installed version: <span class="sip installed-version">Loading...</span><br>
-		Release: <span class="sip release-name">Loading...</span><br>
-		Download the latest binary: <a href="https://tomsworldph-my.sharepoint.com/:f:/g/personal/alexander_fernandez_tomsworld_com_ph/EsFLbkWSnd9HrWgJrJmp318B0NlLb56zShA1BNbNoQXD1A?e=cEGorC" target="_blank" 
-		style="vertical-align: text-bottom; display: inline-flex;">
-		<img src="https://img.shields.io/github/release/wled-dev/WLED.svg?style=flat-square"></a><br>
-		<input type="hidden" name="skipValidation" value="" id="sV">
-		<input type='file' name='update' required><br> <!--should have accept='.bin', but it prevents file upload from android app-->
-		<input type='checkbox' onchange="sV.value=checked?1:''" id="skipValidation">
-		<label for='skipValidation'>Ignore firmware validation</label><br>
-		<button type="submit">Update!</button><br>
-		<hr class="sml">
-		<button id="rev" type="button" onclick="cR()">Revert update</button><br>
-		<button type="button" onclick="B()">Back</button>
+		<div class="card">
+			<h3>Firmware</h3>
+			<div class="f">Installed version: <span class="sip installed-version">Loading...</span></div>
+			<div class="f">Release: <span class="sip release-name">Loading...</span></div>
+			<div class="f">Download the latest binary: <a href="https://tomsworldph-my.sharepoint.com/:f:/g/personal/alexander_fernandez_tomsworld_com_ph/EsFLbkWSnd9HrWgJrJmp318B0NlLb56zShA1BNbNoQXD1A?e=cEGorC" target="_blank">Download</a></div>
+			<input type="hidden" name="skipValidation" value="" id="sV">
+			<div class="r"><input type='file' name='update' required></div> <!--should have accept='.bin', but it prevents file upload from android app-->
+			<div class="f"><label for='skipValidation'>Ignore firmware validation</label><input type='checkbox' onchange="sV.value=checked?1:''" id="skipValidation"></div>
+			<div class="ctr"><button type="submit">Update!</button></div>
+			<hr class="sml">
+			<div class="ctr">
+				<button id="rev" type="button" onclick="cR()">Revert update</button>
+				<button type="button" onclick="B()">Back</button>
+			</div>
+		</div>
 	</form>
-	<div id="bootloader-section" style="display:none;">
-		<hr class="sml">
-		<h2>ESP32 Bootloader Update</h2>
+	<div id="bootloader-section" class="card" style="display:none;">
+		<h3>ESP32 Bootloader Update</h3>
 		<div id="bootloader-hash" class="sip" style="margin-bottom:8px;"></div>
 		<form method='POST' action='./updatebootloader' id='bootupd' enctype='multipart/form-data' onsubmit="toggle('bootupd')">
-			<b>Warning:</b> Only upload verified ESP32 bootloader files!<br>
-			<input type='file' name='update' required><br>
-			<button type="submit">Update Bootloader</button>
+			<div class="warn"><b>Warning:</b> Only upload verified ESP32 bootloader files!</div>
+			<div class="r"><input type='file' name='update' required></div>
+			<div class="ctr"><button type="submit">Update Bootloader</button></div>
 		</form>
 	</div>
-	<div id="Noupd" class="hide"><b>Updating...</b><br>Please do not close or refresh the page :)</div>
+	<div id="Noupd" class="hide card ctr"><b>Updating...</b><br>Please do not close or refresh the page :)</div>
 </body>
 </html>

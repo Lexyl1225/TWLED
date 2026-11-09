@@ -85,13 +85,13 @@
 				} else {
 					if(t === 'boolean')
 					{
-						str += `${lb}: <input class="agi cb" type="checkbox" id=${fk} ${s[i]?"checked":""}><br>`;
+						str += `<label class="f">${lb}: <input class="agi cb" type="checkbox" id=${fk} ${s[i]?"checked":""}></label>`;
 					} else if (t === 'number')
 					{
-						str += `${lb}: <input class="agi" type="number" id=${fk} value=${s[i]}><br>`;
+						str += `<label class="f">${lb}: <input class="agi" type="number" id=${fk} value=${s[i]}></label>`;
 					} else if (t === 'string')
 					{
-						str += `${lb}:<br><input class="agi" id=${fk} value=${s[i]}><br>`;
+						str += `<label class="f">${lb}: <input class="agi" id=${fk} value=${s[i]}></label>`;
 					}
 				}
 			}
@@ -219,51 +219,61 @@
 		<span id="lserr" style="color:red; display:none">&#9888; Could not access local storage. Make sure it is enabled in your browser.</span><hr>
 		</div>
 		<h2>Web Setup</h2>
-		Server description: <input type="text" name="DS" maxlength="32"><br>
-		<!-- Sync button toggles both send and receive: <input type="checkbox" name="ST"><br> -->
-		Enable simplified UI: <input type="checkbox" name="SU"><br>
-		<i>The following UI customization settings are unique both to the TWLED device and this browser.<br>
-		You will need to set them again if using a different browser, device or TWLED IP address.<br>
-		Refresh the main UI to apply changes.</i><br>
-		
-		<div id="gen">Loading settings...</div>
-		
-		<h3>UI Appearance</h3>
-		<span class="l"></span>: <input type="checkbox" id="comp_labels" class="agi cb"><br>
-		<span class="l"></span>: <input type="checkbox" id="comp_pcmbot" class="agi cb"><br>
-		<span class="l"></span>: <input type="checkbox" id="comp_pid" class="agi cb"><br>
-		<span class="l"></span>: <input type="checkbox" id="comp_seglen" class="agi cb"><br>
-		<span class="l"></span>: <input type="checkbox" id="comp_segpwr" class="agi cb"><br>
-		<span class="l"></span>: <input type="checkbox" id="comp_segexp" class="agi cb"><br>
-		<span class="l"></span>: <input type="checkbox" id="comp_fxdef" class="agi cb"><br>
-		<span class="l"></span>: <input type="number" min=0 max=250 step=1 id="comp_on" class="agi"><br>
-		<span class="l"></span>: <input type="number" min=0 max=250 step=1 id="comp_off" class="agi"><br>
-		<span class="l"></span>: <input type="checkbox" id="comp_idsort" class="agi cb"><br>
-		I hate dark mode: <input type="checkbox" id="dm" onchange="UI()"><br>
-		<span id="idonthateyou" style="display:none"><i>Why would you? </i>&#x1F97A;<br></span>
-		<span class="l"></span>: <input type="number" min=0.0 max=1.0 step=0.01 id="theme_alpha_tab" class="agi"><br>
-		<span class="l"></span>: <input type="number" min=0.0 max=1.0 step=0.01 id="theme_alpha_bg" class="agi"><br>
-		<span class="l"></span>: <input type="text" id="theme_color_bg" maxlength="9" class="agi"><br>
-		BG image: <input type="file" id="theme_bg_img" accept="image/*" onchange="ownBg(this)"> <input type="button" value="Remove" onclick="removeBgImg()"><br>
-		<span class="l"></span>: <input type="checkbox" id="theme_bg_rnd" class="agi cb" onchange="randomBg();toggle('Image');">
-		<div id="Image">
-			<div id="bg_url">
-				<span class="l"></span>: <input type="text" id="theme_bg_url" class="agi"><br>
+		<div class="card">
+			<label class="f">Server description: <input type="text" name="DS" maxlength="32"></label>
+			<!-- Sync button toggles both send and receive: <input type="checkbox" name="ST"><br> -->
+			<label class="f">Enable simplified UI: <input type="checkbox" name="SU"></label>
+			<i class="n">The following UI customization settings are unique both to the TWLED device and this browser.<br>
+			You will need to set them again if using a different browser, device or TWLED IP address.<br>
+			Refresh the main UI to apply changes.</i>
+		</div>
+
+		<div id="gen" class="card">Loading settings...</div>
+
+		<div class="card">
+			<h3>UI Appearance</h3>
+			<label class="f"><span class="l"></span><input type="checkbox" id="comp_labels" class="agi cb"></label>
+			<label class="f"><span class="l"></span><input type="checkbox" id="comp_pcmbot" class="agi cb"></label>
+			<label class="f"><span class="l"></span><input type="checkbox" id="comp_pid" class="agi cb"></label>
+			<label class="f"><span class="l"></span><input type="checkbox" id="comp_seglen" class="agi cb"></label>
+			<label class="f"><span class="l"></span><input type="checkbox" id="comp_segpwr" class="agi cb"></label>
+			<label class="f"><span class="l"></span><input type="checkbox" id="comp_segexp" class="agi cb"></label>
+			<label class="f"><span class="l"></span><input type="checkbox" id="comp_fxdef" class="agi cb"></label>
+			<label class="f"><span class="l"></span><input type="number" min=0 max=250 step=1 id="comp_on" class="agi"></label>
+			<label class="f"><span class="l"></span><input type="number" min=0 max=250 step=1 id="comp_off" class="agi"></label>
+			<label class="f"><span class="l"></span><input type="checkbox" id="comp_idsort" class="agi cb"></label>
+		</div>
+		<div class="card">
+			<h3>Theme</h3>
+			<label class="f">I hate dark mode: <input type="checkbox" id="dm" onchange="UI()"></label>
+			<span id="idonthateyou" style="display:none"><i>Why would you? </i>&#x1F97A;<br></span>
+			<label class="f"><span class="l"></span><input type="number" min=0.0 max=1.0 step=0.01 id="theme_alpha_tab" class="agi"></label>
+			<label class="f"><span class="l"></span><input type="number" min=0.0 max=1.0 step=0.01 id="theme_alpha_bg" class="agi"></label>
+			<label class="f"><span class="l"></span><input type="text" id="theme_color_bg" maxlength="9" class="agi"></label>
+			<div class="f"><span>BG image:</span> <span class="ctl"><span></span><input type="file" id="theme_bg_img" accept="image/*" onchange="ownBg(this)"> <input type="button" value="Remove" onclick="removeBgImg()"></span></div>
+			<label class="f"><span class="l"></span><input type="checkbox" id="theme_bg_rnd" class="agi cb" onchange="randomBg();toggle('Image');"></label>
+			<div id="Image">
+				<div id="bg_url">
+					<label class="f"><span class="l"></span><input type="text" id="theme_bg_url" class="agi"></label>
+				</div>
 			</div>
+			<div id="NoImage" class="hide">
+				<h4>Random BG image settings</h4>
+				<label class="f"><span class="l"></span><input type="checkbox" id="theme_bg_rndGrayscale" class="agi cb" onchange="randomBg()"></label>
+				<label class="f"><span class="l"></span><input type="checkbox" id="theme_bg_rndBlur" class="agi cb" onchange="randomBg()"></label>
+			</div>
+			<input id="theme_base" class="agi" style="display:none">
 		</div>
-		<div id="NoImage" class="hide">
-			<h4>Random BG image settings</h4>
-			<span class="l"></span>: <input type="checkbox" id="theme_bg_rndGrayscale" class="agi cb" onchange="randomBg()"><br>
-			<span class="l"></span>: <input type="checkbox" id="theme_bg_rndBlur" class="agi cb" onchange="randomBg()"><br>
+		<div class="card">
+			<h3>Customization</h3>
+			<label class="f"><span class="l"></span><input type="checkbox" id="comp_css" class="agi cb"></label>
+			<div id="skin" class="f">Custom CSS: <span class="ctl"><input type="file" name="data" accept=".css"> <input type="button" value="Upload" onclick="uploadFile(d.Sf.data,'/skin.css');"></span></div>
+			<label class="f"><span class="l"></span><input type="checkbox" id="comp_hdays" class="agi cb"></label>
+			<div id="holidays" class="f">Holidays: <span class="ctl"><input type="file" name="data2" accept=".json"> <input type="button" value="Upload" onclick="uploadFile(d.Sf.data2,'/holidays.json');"></span></div>
+			<div class="ctr"><button type="button" onclick="cLS()">Clear local storage</button></div>
 		</div>
-		<input id="theme_base" class="agi" style="display:none">
-		<span class="l"></span>: <input type="checkbox" id="comp_css" class="agi cb"><br>
-		<div id="skin">Custom CSS: <input type="file" name="data" accept=".css"> <input type="button" value="Upload" onclick="uploadFile(d.Sf.data,'/skin.css');"><br></div>
-		<span class="l"></span>: <input type="checkbox" id="comp_hdays" class="agi cb"><br>
-		<div id="holidays">Holidays: <input type="file" name="data2" accept=".json"> <input type="button" value="Upload" onclick="uploadFile(d.Sf.data2,'/holidays.json');"><br></div>
 		<div id="toast"></div>
-		<hr><button type="button" onclick="cLS()">Clear local storage</button>
-		<hr><button type="button" onclick="B()">Back</button><button type="button" onclick="Save()">Save</button>
+		<button type="button" onclick="B()">Back</button><button type="button" onclick="Save()">Save</button>
 	</form>
 </body>
 </html>

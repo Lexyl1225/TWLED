@@ -7,7 +7,7 @@
  */
 
 // version code in format yymmddb (b = daily build)
-#define VERSION 26110405
+#define VERSION 26110502
 
 //uncomment this if you have a "my_config.h" file you'd like to use
 #define TWLED_USE_MY_CONFIG

@@ -411,11 +411,11 @@
 			gId('m0').innerHTML = memu;
 			bquot = memu / maxM * 100;
 			gId('dbar').style.background = `linear-gradient(90deg, ${bquot > 60 ? (bquot > 90 ? "red":"green"):"#ccc"} 0 ${bquot}%, #444 ${bquot}% 100%)`;
-			gId('ledwarning').style.display = (maxLC > Math.min(maxPB,2400) || bquot > 80) ? 'inline':'none';
+			gId('ledwarning').style.display = (maxLC > Math.min(maxPB,2400) || bquot > 80) ? 'block':'none';
 			gId('ledwarning').style.color = (maxLC > Math.max(maxPB,2400) || bquot > 100) ? 'red':'green';
 			gId('wreason').innerHTML = (bquot > 80) ? "80% of max LED memory" +(bquot>100 ? ` (<b>WARNING: using over ${maxM}B!</b>)` : "") : "2400 LEDs per output";
 			// calculate power
-			gId('ampwarning').style.display = (parseInt(d.Sf.MA.value,10) > 7200) ? 'inline':'none';
+			gId('ampwarning').style.display = (parseInt(d.Sf.MA.value,10) > 7200) ? 'block':'none';
 			var val = Math.ceil((100 + busMA)/500)/2;
 			val = (val > 5) ? Math.ceil(val) : val;
 			var s = "A power supply with total of ";
@@ -464,23 +464,21 @@
 
 			if (n==1) {
 // npm run build has trouble minimizing spaces inside string
-				var cn = `<div class="iST">
-<hr class="sml">
-${i+1}:
-<select name="LT${s}" onchange="UI(true)"></select><br>
+				var cn = `<div class="iST sub">
+<label class="f"><b>Output ${i+1}</b><select name="LT${s}" onchange="UI(true)"></select></label>
 <div id="abl${s}">
-mA/LED: <select name="LAsel${s}" onchange="enLA(this,'${s}');UI();">
+<label class="f">mA/LED: <select name="LAsel${s}" onchange="enLA(this,'${s}');UI();">
 <option value="55" selected>55mA (typ. 5V WS281x)</option>
 <option value="35">35mA (eco WS2812)</option>
 <option value="30">30mA (typ. 12V)</option>
 <option value="255">12mA (WS2815)</option>
 <option value="15">15mA (seed/fairy pixels)</option>
 <option value="0">Custom</option>
-</select><br>
-<div id="LAdis${s}" style="display: none;">max. mA/LED: <input name="LA${s}" type="number" min="1" max="255" oninput="UI()"> mA<br></div>
-<div id="PSU${s}">PSU: <input name="MA${s}" type="number" class="xl" min="250" max="65000" oninput="UI()" value="250"> mA<br></div>
+</select></label>
+<div id="LAdis${s}" style="display: none;"><div class="f">max. mA/LED: <span class="ctl"><input name="LA${s}" type="number" min="1" max="255" oninput="UI()"> mA</span></div></div>
+<div id="PSU${s}"><div class="f">PSU: <span class="ctl"><input name="MA${s}" type="number" class="xl" min="250" max="65000" oninput="UI()" value="250"> mA</span></div></div>
 </div>
-<div id="co${s}" style="display:inline">Color Order:
+<div id="co${s}" style="display:inline"><label class="f">Color Order:
 <select name="CO${s}">
 <option value="0">GRB</option>
 <option value="1">RGB</option>
@@ -488,23 +486,23 @@ mA/LED: <select name="LAsel${s}" onchange="enLA(this,'${s}');UI();">
 <option value="3">RBG</option>
 <option value="4">BGR</option>
 <option value="5">GBR</option>
-</select></div>
-<div id="dig${s}w" style="display:none">Swap: <select name="WO${s}"><option value="0">None</option><option value="1">W & B</option><option value="2">W & G</option><option value="3">W & R</option><option data-opt="CCT" value="4">WW & CW</option></select></div>
-<div id="dig${s}l" style="display:none">Clock: <select name="SP${s}"><option value="0">Slowest</option><option value="1">Slow</option><option value="2">Normal</option><option value="3">Fast</option><option value="4">Fastest</option></select></div>
+</select></label></div>
+<div id="dig${s}w" style="display:none"><label class="f">Swap: <select name="WO${s}"><option value="0">None</option><option value="1">W & B</option><option value="2">W & G</option><option value="3">W & R</option><option data-opt="CCT" value="4">WW & CW</option></select></label></div>
+<div id="dig${s}l" style="display:none"><label class="f">Clock: <select name="SP${s}"><option value="0">Slowest</option><option value="1">Slow</option><option value="2">Normal</option><option value="3">Fast</option><option value="4">Fastest</option></select></label></div>
 <div>
-<span id="psd${s}">Start:</span> <input type="number" name="LS${s}" id="ls${s}" class="l starts" min="0" max="8191" value="${lastEnd(i)}" oninput="startsDirty[${i}]=true;UI();" required />&nbsp;
-<div id="dig${s}c" style="display:inline">Length: <input type="number" name="LC${s}" class="l" min="1" max="${maxPB}" value="1" required oninput="UI()" /></div><br>
+<label class="f"><span id="psd${s}">Start:</span> <input type="number" name="LS${s}" id="ls${s}" class="l starts" min="0" max="8191" value="${lastEnd(i)}" oninput="startsDirty[${i}]=true;UI();" required /></label>
+<div id="dig${s}c" style="display:inline"><label class="f">Length: <input type="number" name="LC${s}" class="l" min="1" max="${maxPB}" value="1" required oninput="UI()" /></label></div>
 </div>
-<span id="p0d${s}">GPIO:</span><input type="number" name="L0${s}" required class="s" onchange="UI();pinUpd(this);"/>
+<div class="f"><span id="p0d${s}">GPIO:</span><span class="ctl"><input type="number" name="L0${s}" required class="s" onchange="UI();pinUpd(this);"/>
 <span id="p1d${s}"></span><input type="number" name="L1${s}" class="s" onchange="UI();pinUpd(this);"/>
 <span id="p2d${s}"></span><input type="number" name="L2${s}" class="s" onchange="UI();pinUpd(this);"/>
 <span id="p3d${s}"></span><input type="number" name="L3${s}" class="s" onchange="UI();pinUpd(this);"/>
-<span id="p4d${s}"></span><input type="number" name="L4${s}" class="s" onchange="UI();pinUpd(this);"/>
-<div id="net${s}h" class="hide">Host: <input type="text" name="HS${s}" maxlength="32" pattern="[a-zA-Z0-9_\\-]*" onchange="UI()"/>.local</div>
-<div id="dig${s}r" style="display:inline"><br><span id="rev${s}">Reversed</span>: <input type="checkbox" name="CV${s}"></div>
-<div id="dig${s}s" style="display:inline"><br>Skip first LEDs: <input type="number" name="SL${s}" min="0" max="255" value="0" oninput="UI()"></div>
-<div id="dig${s}f" style="display:inline"><br><span id="off${s}">Off Refresh</span>: <input id="rf${s}" type="checkbox" name="RF${s}"></div>
-<div id="dig${s}a" style="display:inline"><br>Auto-calculate W channel from RGB:<br><select name="AW${s}"><option value=0>None</option><option value=1>Brighter</option><option value=2>Accurate</option><option value=3>Dual</option><option value=4>Max</option></select>&nbsp;</div>
+<span id="p4d${s}"></span><input type="number" name="L4${s}" class="s" onchange="UI();pinUpd(this);"/></span></div>
+<div id="net${s}h" class="hide"><div class="f">Host: <span class="ctl"><input type="text" name="HS${s}" maxlength="32" pattern="[a-zA-Z0-9_\\-]*" onchange="UI()"/>.local</span></div></div>
+<div id="dig${s}r" style="display:inline"><label class="f"><span id="rev${s}" class="l">Reversed</span><input type="checkbox" name="CV${s}"></label></div>
+<div id="dig${s}s" style="display:inline"><label class="f">Skip first LEDs: <input type="number" name="SL${s}" min="0" max="255" value="0" oninput="UI()"></label></div>
+<div id="dig${s}f" style="display:inline"><label class="f"><span id="off${s}" class="l">Off Refresh</span><input id="rf${s}" type="checkbox" name="RF${s}"></label></div>
+<div id="dig${s}a" style="display:inline"><label class="f">Auto-calculate W channel from RGB:<select name="AW${s}"><option value=0>None</option><option value=1>Brighter</option><option value=2>Accurate</option><option value=3>Dual</option><option value=4>Max</option></select></label></div>
 </div>`;
 				f.insertAdjacentHTML("beforeend", cn);
 				// fill led types (credit @netmindz)
@@ -548,11 +546,11 @@ mA/LED: <select name="LAsel${s}" onchange="enLA(this,'${s}');UI();">
 			var i = gEBCN("com_entry").length;
 			if (i >= maxCO) return;
 			var s = chrID(i);
-			var b = `<div class="com_entry">
-<hr class="sml">
-${i+1}: Start: <input type="number" name="XS${s}" id="xs${s}" class="l starts" min="0" max="81000" value="${start}" oninput="UI();" required="">&nbsp;
-Length: <input type="number" name="XC${s}" id="xc${s}" class="l" min="1" max="81000" value="${len}" required="" oninput="UI()">
-<div>Color Order:
+			var b = `<div class="com_entry sub">
+<h4>Override ${i+1}</h4>
+<label class="f">Start: <input type="number" name="XS${s}" id="xs${s}" class="l starts" min="0" max="81000" value="${start}" oninput="UI();" required=""></label>
+<label class="f">Length: <input type="number" name="XC${s}" id="xc${s}" class="l" min="1" max="81000" value="${len}" required="" oninput="UI()"></label>
+<label class="f">Color Order:
 <select id="xo${s}" name="XO${s}">
 <option value="0">GRB</option>
 <option value="1">RGB</option>
@@ -560,14 +558,13 @@ Length: <input type="number" name="XC${s}" id="xc${s}" class="l" min="1" max="81
 <option value="3">RBG</option>
 <option value="4">BGR</option>
 <option value="5">GBR</option>
-</select>
-Swap: <select id="xw${s}" name="XW${s}">
+</select></label>
+<label class="f">Swap: <select id="xw${s}" name="XW${s}">
 <option value="0">Use global</option>
 <option value="1">W & B</option>
 <option value="2">W & G</option>
 <option value="3">W & R</option>
-</select>
-</div></div>`;
+</select></label></div>`;
 			gId("com_entries").insertAdjacentHTML("beforeend", b);
 			gId("xo"+s).value = co & 0x0F;
 			gId("xw"+s).value = co >> 4;
@@ -602,7 +599,7 @@ Swap: <select id="xw${s}" name="XW${s}">
 		function addBtn(i,p,t) {
 			var c = gId("btns").innerHTML;
 			var s = chrID(i);
-			c += `Button ${i} GPIO: <input type="number" name="BT${s}" onchange="UI()" class="xs" value="${p}">`;
+			c += `<div class="f">Button ${i} GPIO: <span class="ctl"><input type="number" name="BT${s}" onchange="UI()" class="xs" value="${p}">`;
 			c += `&nbsp;<select name="BE${s}">`
 			c += `<option value="0" ${t==0?"selected":""}>Disabled</option>`;
 			c += `<option value="2" ${t==2?"selected":""}>Pushbutton</option>`;
@@ -614,7 +611,7 @@ Swap: <select id="xw${s}" name="XW${s}">
 			c += `<option value="8" ${t==8?"selected":""}>Analog inverted</option>`;
 			c += `<option value="9" ${t==9?"selected":""}>Touch (switch)</option>`;
 			c += `</select>`;
-			c += `<span style="cursor: pointer;" onclick="off('BT${s}')">&nbsp;&#x2715;</span><br>`;
+			c += `<span style="cursor: pointer;" onclick="off('BT${s}')">&nbsp;&#x2715;</span></span></div>`;
 			gId("btns").innerHTML = c;
 		}
 		function tglSi(cs) {
@@ -822,131 +819,151 @@ Swap: <select id="xw${s}" name="XW${s}">
 		<button type="button" onclick="B()">Back</button><button type="submit">Save</button><hr>
 		</div>
 		<h2>LED &amp; Hardware setup</h2>
-		Total LEDs: <span id="lc">?</span> <span id="pc"></span><br>
-		<i>Recommended power supply for brightest white:</i><br>
-		<b><span id="psu">?</span></b><br>
-		<span id="psu2"><br></span>
-		<br>
-		Enable automatic brightness limiter: <input type="checkbox" name="ABL" onchange="enABL()"><br>
-		<div id="abl">
-			<i>Automatically limits brightness to stay close to the limit.<br>
-				Keep at &lt;1A if powering LEDs directly from the ESP 5V pin!<br>
-				If using multiple outputs it is recommended to use per-output limiter.<br>
-				Analog (PWM) and virtual LEDs cannot use automatic brightness limiter.<br></i>
-			<div id="psuMA">Maximum PSU Current: <input name="MA" type="number" class="xl" min="250" max="65000" oninput="UI()" required> mA<br></div>
-			Use per-output limiter: <input type="checkbox" name="PPL" onchange="UI()"><br>
-			<div id="ppldis" style="display:none;">
-				<i>Make sure you enter correct value for each LED output.<br>
-				If using multiple outputs with only one PSU, distribute its power proportionally amongst outputs.</i><br>
-			</div>
-			<div id="ampwarning" class="warn" style="display: none;">
-				&#9888; Your power supply provides high current.<br>
-				To improve the safety of your setup,<br>
-				please use thick cables,<br>
-				multiple power injection points and a fuse!<br>
+		<div class="card">
+			<h3>Power</h3>
+			<div class="f">Total LEDs: <span><span id="lc">?</span> <span id="pc"></span></span></div>
+			<i class="n">Recommended power supply for brightest white:</i>
+			<b><span id="psu">?</span></b><br>
+			<span id="psu2"><br></span>
+			<label class="f">Enable automatic brightness limiter: <input type="checkbox" name="ABL" onchange="enABL()"></label>
+			<div id="abl">
+				<i class="n">Automatically limits brightness to stay close to the limit.<br>
+					Keep at &lt;1A if powering LEDs directly from the ESP 5V pin!<br>
+					If using multiple outputs it is recommended to use per-output limiter.<br>
+					Analog (PWM) and virtual LEDs cannot use automatic brightness limiter.</i>
+				<div id="psuMA"><div class="f">Maximum PSU Current: <span class="ctl"><input name="MA" type="number" class="xl" min="250" max="65000" oninput="UI()" required> mA</span></div></div>
+				<label class="f">Use per-output limiter: <input type="checkbox" name="PPL" onchange="UI()"></label>
+				<div id="ppldis" style="display:none;">
+					<i class="n">Make sure you enter correct value for each LED output.<br>
+					If using multiple outputs with only one PSU, distribute its power proportionally amongst outputs.</i>
+				</div>
+				<div id="ampwarning" class="warn" style="display: none;">
+					&#9888; Your power supply provides high current.<br>
+					To improve the safety of your setup,<br>
+					please use thick cables,<br>
+					multiple power injection points and a fuse!<br>
+				</div>
 			</div>
 		</div>
-		<h3>Hardware setup</h3>
-		<div id="mLC">LED outputs:</div>
-		<hr class="sml">
-		<button type="button" id="+" onclick="addLEDs(1,false)">+</button>
-		<button type="button" id="-" onclick="addLEDs(-1,false)">-</button><br>
-		LED memory usage: <span id="m0">0</span> / <span id="m1">?</span> B<br>
-		<div id="dbar" style="display:inline-block; width: 100px; height: 10px; border-radius: 20px;"></div><br>
-		<div id="ledwarning" class="warn" style="display: none;">
-			&#9888; You might run into stability or lag issues.<br>
-			Use less than <span id="wreason">2400 LEDs per output</span> for the best experience!<br>
-		</div>
-		<hr class="sml">
-		<div id="prl" class="hide">Use parallel I2S: <input type="checkbox" name="PR"><br></div>
-		Make a segment for each output: <input type="checkbox" name="MS"><br>
-		Custom bus start indices: <input type="checkbox" onchange="tglSi(this.checked)" id="si"><br>
-		<hr class="sml">
-		<div id="color_order_mapping">
-			Color Order Override:
-			<div id="com_entries"></div>
+		<div class="card">
+			<h3>Hardware setup</h3>
+			LED outputs:
+			<div id="mLC"></div>
+			<div class="ctr">
+				<button type="button" id="+" onclick="addLEDs(1,false)">+</button>
+				<button type="button" id="-" onclick="addLEDs(-1,false)">-</button>
+			</div>
+			<div class="f">LED memory usage: <span><span id="m0">0</span> / <span id="m1">?</span> B</span></div>
+			<div id="dbar" style="display:inline-block; width: 100px; height: 10px; border-radius: 20px;"></div>
+			<div id="ledwarning" class="warn" style="display: none;">
+				&#9888; You might run into stability or lag issues.<br>
+				Use less than <span id="wreason">2400 LEDs per output</span> for the best experience!<br>
+			</div>
 			<hr class="sml">
-			<button type="button" id="com_add" onclick="addCOM()">+</button>
-			<button type="button" id="com_rem" onclick="remCOM()">-</button><br>
+			<div id="prl" class="hide"><label class="f">Use parallel I2S: <input type="checkbox" name="PR"></label></div>
+			<label class="f">Make a segment for each output: <input type="checkbox" name="MS"></label>
+			<label class="f">Custom bus start indices: <input type="checkbox" onchange="tglSi(this.checked)" id="si"></label>
 		</div>
-		<hr class="sml">
-		<div id="btns"></div>
-		Disable internal pull-up/down: <input type="checkbox" name="IP"><br>
-		Touch threshold: <input type="number" class="s" min="0" max="100" name="TT" required><br>
-		<hr class="sml">
-		IR GPIO: <input type="number" min="-1" max="48" name="IR" onchange="UI()" class="xs"><select name="IT" onchange="UI()">
-		<option value=0>Remote disabled</option>
-		<option value=1>24-key RGB</option>
-		<option value=2>24-key with CT</option>
-		<option value=3>40-key blue</option>
-		<option value=4>44-key RGB</option>
-		<option value=5>21-key RGB</option>
-		<option value=6>6-key black</option>
-		<option value=7>9-key red</option>
-		<option value=8>JSON remote</option>
-		</select><span style="cursor: pointer;" onclick="off('IR')">&nbsp;&#x2715;</span><br>
-		Apply IR change to main segment only: <input type="checkbox" name="MSO"><br>
-		<div id="json" style="display:none;">JSON file: <input type="file" name="data" accept=".json"><button type="button" class="sml" onclick="uploadFile(d.Sf.data,'/ir.json')">Upload</button><br></div>
-		<a href="https://kno.wled.ge/interfaces/infrared/" target="_blank">IR info</a><br>
-		<hr class="sml">
-		Relay GPIO: <input type="number" min="-1" max="48" name="RL" onchange="UI()" class="xs"><span style="cursor: pointer;" onclick="off('RL')">&nbsp;&#x2715;</span><br>
-		Invert <input type="checkbox" name="RM"> Open drain <input type="checkbox" name="RO"><br>
-		<hr class="sml">
-		<h3>Defaults</h3>
-		Turn LEDs on after power up/reset: <input type="checkbox" name="BO"><br>
-		Default brightness: <input name="CA" type="number" class="m" min="1" max="255" required> (1-255)<br><br>
-		Apply preset <input name="BP" type="number" class="m" min="0" max="250" required> at boot (0 uses values from above)<br><br>
-		Use Gamma correction for color: <input type="checkbox" name="GC"> (strongly recommended)<br>
-		Use Gamma correction for brightness: <input type="checkbox" name="GB"> (not recommended)<br>
-		Use Gamma value: <input name="GV" type="number" class="m" placeholder="2.8" min="1" max="3" step="0.1" required><br><br>
-		Brightness factor: <input name="BF" type="number" class="m" min="1" max="255" required> %
-		<h3>Transitions</h3>
-		Default transition time: <input name="TD" type="number" class="xl" min="0" max="65500"> ms<br>
-		<i>Random Cycle</i> Palette Time: <input name="TP" type="number" class="m" min="1" max="255"> s<br>
-		<h3>Timed light</h3>
-		Default duration: <input name="TL" type="number" class="m" min="1" max="255" required> min<br>
-		Default target brightness: <input name="TB" type="number" class="m" min="0" max="255" required><br>
-		Mode:
-		<select name="TW">
-			<option value="0">Wait and set</option>
-			<option value="1">Fade</option>
-			<option value="2">Fade Color</option>
-			<option value="3">Sunrise</option>
-		</select>
-		<h3>White management</h3>
-		White Balance correction: <input type="checkbox" name="CCT"><br>
-		<div id="wc">
-			Global override for Auto-calculate white:<br>
-			<select name="AW">
-				<option value=255>Disabled</option>
-				<option value=0>None</option>
-				<option value=1>Brighter</option>
-				<option value=2>Accurate</option>
-				<option value=3>Dual</option>
-				<option value=4>Max</option>
-			</select>
-			<br>
-			Calculate CCT from RGB: <input type="checkbox" name="CR"><br>
-			CCT IC used (Athom 15W): <input type="checkbox" name="IC"><br>
-			CCT additive blending: <input type="number" class="s" min="0" max="100" name="CB" onchange="UI()" required> %<br>
-			<i class="warn">WARNING: When using H-bridge for reverse polarity (2-wire) CCT LED strip<br><b>make sure this value is 0</b>.<br>(ESP32 variants only, ESP8266 does not support H-bridges)</i>
+		<div id="color_order_mapping" class="card">
+			<h3>Color Order Override</h3>
+			<div id="com_entries"></div>
+			<div class="ctr">
+				<button type="button" id="com_add" onclick="addCOM()">+</button>
+				<button type="button" id="com_rem" onclick="remCOM()">-</button>
+			</div>
 		</div>
-		<h3>Advanced</h3>
-		Palette wrapping:
-		<select name="PB">
-			<option value="0">Linear (wrap if moving)</option>
-			<option value="1">Linear (always wrap)</option>
-			<option value="2">Linear (never wrap)</option>
-			<option value="3">None (not recommended)</option>
-		</select><br>
-		Use harmonic <i>Random Cycle</i> palette: <input type="checkbox" name="TH"><br>
-		Target refresh rate: <input type="number" class="s" min="0" max="250" name="FR" oninput="UI()" required> FPS
-		<div id="fpsNone" class="warn" style="display: none;">&#9888; Unlimited FPS Mode is experimental &#9888;<br></div>
-		<div id="fpsHigh" class="warn" style="display: none;">&#9888; High FPS Mode is experimental.<br></div>
-		<div id="fpsWarn" class="warn" style="display: none;">Please <a class="lnk" href="sec#backup">backup</a> TWLED configuration and presets first!<br></div>
-		<hr class="sml">
-		<div id="cfg">Config template: <input type="file" name="data2" accept=".json"><button type="button" class="sml" onclick="loadCfg(d.Sf.data2)">Apply</button><br></div>
-		<hr>
+		<div class="card">
+			<h3>Buttons</h3>
+			<div id="btns"></div>
+			<label class="f">Disable internal pull-up/down: <input type="checkbox" name="IP"></label>
+			<label class="f">Touch threshold: <input type="number" class="s" min="0" max="100" name="TT" required></label>
+		</div>
+		<div class="card">
+			<h3>Infrared</h3>
+			<div class="f">IR GPIO: <span class="ctl"><input type="number" min="-1" max="48" name="IR" onchange="UI()" class="xs"><select name="IT" onchange="UI()">
+			<option value=0>Remote disabled</option>
+			<option value=1>24-key RGB</option>
+			<option value=2>24-key with CT</option>
+			<option value=3>40-key blue</option>
+			<option value=4>44-key RGB</option>
+			<option value=5>21-key RGB</option>
+			<option value=6>6-key black</option>
+			<option value=7>9-key red</option>
+			<option value=8>JSON remote</option>
+			</select><span style="cursor: pointer;" onclick="off('IR')">&nbsp;&#x2715;</span></span></div>
+			<label class="f">Apply IR change to main segment only: <input type="checkbox" name="MSO"></label>
+			<div id="json" style="display:none;"><div class="f">JSON file: <span class="ctl"><input type="file" name="data" accept=".json"><button type="button" class="sml" onclick="uploadFile(d.Sf.data,'/ir.json')">Upload</button></span></div></div>
+			<div class="r"><a href="https://kno.wled.ge/interfaces/infrared/" target="_blank">IR info</a></div>
+		</div>
+		<div class="card">
+			<h3>Relay</h3>
+			<div class="f">Relay GPIO: <span class="ctl"><input type="number" min="-1" max="48" name="RL" onchange="UI()" class="xs"><span style="cursor: pointer;" onclick="off('RL')">&nbsp;&#x2715;</span></span></div>
+			<label class="f">Invert <input type="checkbox" name="RM"></label>
+			<label class="f">Open drain <input type="checkbox" name="RO"></label>
+		</div>
+		<div class="card">
+			<h3>Defaults</h3>
+			<label class="f">Turn LEDs on after power up/reset: <input type="checkbox" name="BO"></label>
+			<div class="f">Default brightness: <span class="ctl"><input name="CA" type="number" class="m" min="1" max="255" required> (1-255)</span></div>
+			<div class="r">Apply preset <input name="BP" type="number" class="m" min="0" max="250" required> at boot (0 uses values from above)</div>
+			<label class="f"><span>Use Gamma correction for color: <i>(strongly recommended)</i></span><input type="checkbox" name="GC"></label>
+			<label class="f"><span>Use Gamma correction for brightness: <i>(not recommended)</i></span><input type="checkbox" name="GB"></label>
+			<label class="f">Use Gamma value: <input name="GV" type="number" class="m" placeholder="2.8" min="1" max="3" step="0.1" required></label>
+			<div class="f">Brightness factor: <span class="ctl"><input name="BF" type="number" class="m" min="1" max="255" required> %</span></div>
+		</div>
+		<div class="card">
+			<h3>Transitions</h3>
+			<div class="f">Default transition time: <span class="ctl"><input name="TD" type="number" class="xl" min="0" max="65500"> ms</span></div>
+			<div class="f"><span><i>Random Cycle</i> Palette Time:</span> <span class="ctl"><input name="TP" type="number" class="m" min="1" max="255"> s</span></div>
+		</div>
+		<div class="card">
+			<h3>Timed light</h3>
+			<div class="f">Default duration: <span class="ctl"><input name="TL" type="number" class="m" min="1" max="255" required> min</span></div>
+			<label class="f">Default target brightness: <input name="TB" type="number" class="m" min="0" max="255" required></label>
+			<label class="f">Mode:
+			<select name="TW">
+				<option value="0">Wait and set</option>
+				<option value="1">Fade</option>
+				<option value="2">Fade Color</option>
+				<option value="3">Sunrise</option>
+			</select></label>
+		</div>
+		<div class="card">
+			<h3>White management</h3>
+			<label class="f">White Balance correction: <input type="checkbox" name="CCT"></label>
+			<div id="wc">
+				<label class="f">Global override for Auto-calculate white:
+				<select name="AW">
+					<option value=255>Disabled</option>
+					<option value=0>None</option>
+					<option value=1>Brighter</option>
+					<option value=2>Accurate</option>
+					<option value=3>Dual</option>
+					<option value=4>Max</option>
+				</select></label>
+				<label class="f">Calculate CCT from RGB: <input type="checkbox" name="CR"></label>
+				<label class="f">CCT IC used (Athom 15W): <input type="checkbox" name="IC"></label>
+				<div class="f">CCT additive blending: <span class="ctl"><input type="number" class="s" min="0" max="100" name="CB" onchange="UI()" required> %</span></div>
+				<i class="warn n">WARNING: When using H-bridge for reverse polarity (2-wire) CCT LED strip<br><b>make sure this value is 0</b>.<br>(ESP32 variants only, ESP8266 does not support H-bridges)</i>
+			</div>
+		</div>
+		<div class="card">
+			<h3>Advanced</h3>
+			<label class="f">Palette wrapping:
+			<select name="PB">
+				<option value="0">Linear (wrap if moving)</option>
+				<option value="1">Linear (always wrap)</option>
+				<option value="2">Linear (never wrap)</option>
+				<option value="3">None (not recommended)</option>
+			</select></label>
+			<label class="f"><span>Use harmonic <i>Random Cycle</i> palette:</span><input type="checkbox" name="TH"></label>
+			<div class="f">Target refresh rate: <span class="ctl"><input type="number" class="s" min="0" max="250" name="FR" oninput="UI()" required> FPS</span></div>
+			<div id="fpsNone" class="warn" style="display: none;">&#9888; Unlimited FPS Mode is experimental &#9888;<br></div>
+			<div id="fpsHigh" class="warn" style="display: none;">&#9888; High FPS Mode is experimental.<br></div>
+			<div id="fpsWarn" class="warn" style="display: none;">Please <a class="lnk" href="sec#backup">backup</a> TWLED configuration and presets first!<br></div>
+			<hr class="sml">
+			<div id="cfg" class="f">Config template: <span class="ctl"><input type="file" name="data2" accept=".json"><button type="button" class="sml" onclick="loadCfg(d.Sf.data2)">Apply</button></span></div>
+		</div>
 		<button type="button" onclick="B()">Back</button><button type="submit">Save</button>
 	</form>
 	<div id="toast"></div>

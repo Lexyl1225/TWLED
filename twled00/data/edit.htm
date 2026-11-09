@@ -26,7 +26,7 @@ body {
 	display: flex;
 	align-items: center;
 	gap: 8px;
-	background: #222;
+	background: var(--pn);
 	padding: 10px 10px;
 }
 #top .center {
@@ -37,8 +37,8 @@ body {
 	margin-left: auto;
 }
 #top input[type="text"] {
-	background: #555;
-	border: 2px solid #555;
+	background: var(--in);
+	border: 1px solid var(--bd);
 	border-radius: 8px;
 	padding: 6px 8px;
 	min-width: 200px;
@@ -49,7 +49,7 @@ body {
 	bottom: 0;
 	left: 0;
 	width: 300px;
-	background: #222;
+	background: var(--pn);
 	overflow-y: auto;
 	padding: 8px 8px 100px;  /* extra space on bottom so context menu always fits */
 	text-align: left;
@@ -60,7 +60,7 @@ body {
 	bottom: 0;
 	left: 300px;
 	right: 0;
-	background: #333;
+	background: var(--bg);
 }
 #editor {
 	display: flex;
@@ -68,9 +68,9 @@ body {
 }
 #editor textarea {
 	flex: 1;
-	background: #333;
-	color: #fff;
-	border: 2px solid #333;
+	background: var(--bg);
+	color: var(--tx);
+	border: 0;
 	padding: 8px;
 	font: 13px monospace;
 	resize: none;
@@ -99,12 +99,15 @@ body {
 .loader {
 	width: 60px;
 	height: 60px;
-	border: 6px solid #444;
-	border-top-color: #28f;
+	border: 6px solid var(--bd);
+	border-top-color: var(--acc);
 	border-radius: 50%;
 	animation: spin 1s linear infinite;
 }
 /* Ace editor colors to match TWLED style*/
+.ace-monokai { background-color: var(--bg) !important; }
+.ace-monokai .ace_gutter { background: var(--pn) !important; }
+.ace-monokai .ace_gutter-active-line, .ace-monokai .ace_marker-layer .ace_active-line { background: var(--in) !important; }
 .ace-monokai .ace_string { color: #4c4 !important; }
 .ace-monokai .ace_constant.ace_numeric { color: #fa0 !important; }
 .ace-monokai .ace_constant.ace_language { color: #f84 !important; }
@@ -266,7 +269,7 @@ function createTree(element, editor){
 		span.style.cssText = "font-size: 14px; color: #aaa; margin-left: 8px;";
 		span.textContent =  (size / 1024).toFixed(1) + "KB";
 		leaf.appendChild(span);
-		leaf.onmouseover=function(){ leaf.style.background="#333"; };
+		leaf.onmouseover=function(){ leaf.style.background="var(--in)"; };
 		leaf.onmouseout=function(){ leaf.style.background=""; };
 		leaf.onclick=function(){ loadPreview(name, editor); };
 
@@ -277,13 +280,13 @@ function createTree(element, editor){
 			if (menuCleanup) menuCleanup();
 			var menu = cE("div");
 			menu.id = "context-menu";
-			menu.style.cssText = "position:fixed;left:"+e.clientX+"px;top:"+e.clientY+"px;background:#333;border:1px solid #666;border-radius:4px;z-index:1000;box-shadow:2px 2px 8px rgba(0,0,0,0.5)";
+			menu.style.cssText = "position:fixed;left:"+e.clientX+"px;top:"+e.clientY+"px;background:var(--pn);border:1px solid var(--bd);border-radius:10px;z-index:1000;box-shadow:2px 2px 8px rgba(0,0,0,0.5)";
 
 			function createOption(text, color, handler) {
 				var opt = cE("div");
 				opt.textContent = text;
 				opt.style.cssText = "padding:8px 12px;cursor:pointer;color:" + color;
-				opt.onmouseover = function() { this.style.background = "#555"; };
+				opt.onmouseover = function() { this.style.background = "var(--in)"; };
 				opt.onmouseout = function() { this.style.background = ""; };
 				opt.onclick = function() { handler(); cleanup(); };
 				return opt;

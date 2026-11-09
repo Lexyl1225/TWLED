@@ -99,7 +99,7 @@ gId("sendJSONledbutton").addEventListener('click', async () => {
 brgh.oninput = () => {
   brgV.textContent = brgh.value;
   let perc = parseInt(brgh.value)*100/255;
-  var val = `linear-gradient(90deg, #bbb ${perc}%, #333 ${perc}%)`;
+  var val = `linear-gradient(90deg, #22d3ee ${perc}%, #1a2740 ${perc}%)`;
   brgh.style.backgroundImage = val;
 }
 
@@ -107,7 +107,7 @@ cLN.oninput = () => {
   let cln = cLN;
   cLV.textContent = cln.value;
   let perc = parseInt(cln.value)*100/512;
-  var val = `linear-gradient(90deg, #bbb ${perc}%, #333 ${perc}%)`;
+  var val = `linear-gradient(90deg, #22d3ee ${perc}%, #1a2740 ${perc}%)`;
   cln.style.backgroundImage = val;
 }
 

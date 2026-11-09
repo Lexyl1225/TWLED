@@ -33,7 +33,7 @@
 <td><input name="N${i}" class="xs" type="number" min="0" max="59"></td>
 <td><input name="T${i}" class="s" type="number" min="0" max="250"></td>
 <td><div id="CB${i}" onclick="expand(this,${i})" class="cal">&#128197;</div></td></tr>`;
-			ih+=`<tr><td colspan=5><div id="WD${i}" style="display:none;background-color:#444;"><hr>Run on weekdays`;
+			ih+=`<tr><td colspan=5><div id="WD${i}" style="display:none;background-color:var(--bg);border-radius:10px;"><hr>Run on weekdays`;
 			ih+=`<table><tr><th>M</th><th>T</th><th>W</th><th>T</th><th>F</th><th>S</th><th>S</th></tr><tr>`
 			for (j=1;j<8;j++) ih+=`<td><input id="W${i}${j}" type="checkbox"></td>`;
 			ih+=`</tr></table>from <select name="M${i}">`;
@@ -48,7 +48,7 @@
 <td><input name="N8" class="xs" type="number" min="-59" max="59"></td>
 <td><input name="T8" class="s" type="number" min="0" max="250"></td>
 <td><div id="CB8" onclick="expand(this,8)" class="cal">&#128197;</div></td></tr><tr><td colspan=5>`;
-		ih+=`<div id="WD8" style="display:none;background-color:#444;"><hr><table><tr><th>M</th><th>T</th><th>W</th><th>T</th><th>F</th><th>S</th><th>S</th></tr><tr>`;
+		ih+=`<div id="WD8" style="display:none;background-color:var(--bg);border-radius:10px;"><hr><table><tr><th>M</th><th>T</th><th>W</th><th>T</th><th>F</th><th>S</th><th>S</th></tr><tr>`;
 		for (j=1;j<8;j++) ih+=`<td><input id="W8${j}" type="checkbox"></td>`;
 		ih+="</tr></table><hr></div></td></tr>";
 		ih+=`<tr><td><input name="W9" id="W9" type="hidden"><input id="W90" type="checkbox"></td>
@@ -56,7 +56,7 @@
 <td><input name="N9" class="xs" type="number" min="-59" max="59"></td>
 <td><input name="T9" class="s" type="number" min="0" max="250"></td>
 <td><div id="CB9" onclick="expand(this,9)" class="cal">&#128197;</div></td></tr><tr><td colspan=5>`;
-		ih+=`<div id="WD9" style="display:none;background-color:#444;"><hr><table><tr><th>M</th><th>T</th><th>W</th><th>T</th><th>F</th><th>S</th><th>S</th></tr><tr>`;
+		ih+=`<div id="WD9" style="display:none;background-color:var(--bg);border-radius:10px;"><hr><table><tr><th>M</th><th>T</th><th>W</th><th>T</th><th>F</th><th>S</th><th>S</th></tr><tr>`;
 		for (j=1;j<8;j++) ih+=`<td><input id="W9${j}" type="checkbox"></td>`;
 		ih+="</tr></table><hr></div></td></tr>";
 		gId("TMT").innerHTML=ih;
@@ -128,84 +128,102 @@
 		<button type="button" onclick="B()">Back</button><button type="submit">Save</button><hr>
 		</div>
 		<h2>Time setup</h2>
-		Get time from NTP server: <input type="checkbox" name="NT"><br>
-		<input type="text" name="NS" maxlength="32"><br>
-		Use 24h format: <input type="checkbox" name="CF"><br>
-		Time zone: 
-		<select name="TZ">
-			<option value="0" selected>GMT(UTC)</option>
-			<option value="1">GMT/BST</option>
-			<option value="2">CET/CEST</option>
-			<option value="3">EET/EEST</option>
-			<option value="4">US-EST/EDT</option>
-			<option value="5">US-CST/CDT</option>
-			<option value="6">US-MST/MDT</option>
-			<option value="7">US-AZ</option>
-			<option value="8">US-PST/PDT</option>
-			<option value="9">CST (AWST, PHST)</option>
-			<option value="10">JST (KST)</option>
-			<option value="11">AEST/AEDT</option>
-			<option value="12">NZST/NZDT</option>
-			<option value="13">North Korea</option>
-			<option value="14">IST (India)</option>
-			<option value="15">CA-Saskatchewan</option>
-			<option value="16">ACST</option>
-			<option value="17">ACST/ACDT</option>
-			<option value="18">HST (Hawaii)</option>
-			<option value="19">NOVT (Novosibirsk)</option>
-			<option value="20">AKST/AKDT (Anchorage)</option>
-			<option value="21">MX-CST</option>
-			<option value="22">PKT (Pakistan)</option>
-			<option value="23">BRT (Brasília)</option>
-			<option value="24">PHP (Philippines)</option>
-		</select><br>
-		UTC offset: <input name="UO" type="number" min="-65500" max="65500" required> seconds (max. 18 hours)<br>
-		Current local time is <span class="times">unknown</span>.<br>
-		Latitude: <select name="LTR"><option value="N">N</option><option value="S">S</option></select><input name="LT" type="number" class="xl" min="0" max="66.6" step="0.01"><br>
-		Longitude: <select name="LNR"><option value="E">E</option><option value="W">W</option></select><input name="LN" type="number" class="xl" min="0" max="180" step="0.01"><br>
-		<button type="button" id="locbtn" onclick="getLatLon()">Get location</button>
-		<div><i>(opens new tab, only works in browser)</i></div>
-		<div id="sun" class="times"></div>
-		<h3>Clock</h3>
-		Analog Clock overlay: <input type="checkbox" name="OL" onchange="Cs()"><br>
-		<div id="cac">
-			First LED: <input name="O1" type="number" min="0" max="1024" required> Last LED: <input name="O2" type="number" min="0" max="1024" required><br>
-			12h LED: <input name="OM" type="number" min="0" max="1024" required><br>
-			Show 5min marks: <input type="checkbox" name="O5"><br>
-			Seconds (as trail): <input type="checkbox" name="OS"><br>
-			Show clock overlay only if all LEDs are solid black: <input type="checkbox" name="OB"><br>
+		<div class="card">
+			<h3>Date &amp; time</h3>
+			<label class="f">Get time from NTP server: <input type="checkbox" name="NT"></label>
+			<input type="text" name="NS" maxlength="32">
+			<label class="f">Use 24h format: <input type="checkbox" name="CF"></label>
+			<label class="f">Time zone:
+			<select name="TZ">
+				<option value="0" selected>GMT(UTC)</option>
+				<option value="1">GMT/BST</option>
+				<option value="2">CET/CEST</option>
+				<option value="3">EET/EEST</option>
+				<option value="4">US-EST/EDT</option>
+				<option value="5">US-CST/CDT</option>
+				<option value="6">US-MST/MDT</option>
+				<option value="7">US-AZ</option>
+				<option value="8">US-PST/PDT</option>
+				<option value="9">CST (AWST, PHST)</option>
+				<option value="10">JST (KST)</option>
+				<option value="11">AEST/AEDT</option>
+				<option value="12">NZST/NZDT</option>
+				<option value="13">North Korea</option>
+				<option value="14">IST (India)</option>
+				<option value="15">CA-Saskatchewan</option>
+				<option value="16">ACST</option>
+				<option value="17">ACST/ACDT</option>
+				<option value="18">HST (Hawaii)</option>
+				<option value="19">NOVT (Novosibirsk)</option>
+				<option value="20">AKST/AKDT (Anchorage)</option>
+				<option value="21">MX-CST</option>
+				<option value="22">PKT (Pakistan)</option>
+				<option value="23">BRT (Brasília)</option>
+				<option value="24">PHP (Philippines)</option>
+			</select></label>
+			<div class="f">UTC offset: <span class="ctl"><input name="UO" type="number" min="-65500" max="65500" required> seconds (max. 18 hours)</span></div>
+			<div class="r">Current local time is <span class="times">unknown</span>.</div>
 		</div>
-		Countdown Mode: <input type="checkbox" name="CE"><br>
-		Countdown Goal:<br>
-		Date:&nbsp;<nowrap>20<input name="CY" class="xs" type="number" min="0" max="99" required>-<input name="CI" class="xs" type="number" min="1" max="12" required>-<input name="CD" class="xs" type="number" min="1" max="31" required></nowrap><br>
-		Time:&nbsp;<nowrap><input name="CH" class="xs" type="number" min="0" max="23" required>:<input name="CM" class="xs" type="number" min="0" max="59" required>:<input name="CS" class="xs" type="number" min="0" max="59" required></nowrap><br>
-		<h3>Macro presets</h3>
-		<b>Macros have moved!</b><br>
-		<i>Presets now also can be used as macros to save both JSON and HTTP API commands.<br>
-		Just enter the preset ID below!</i>
-		<i>Use 0 for the default action instead of a preset</i><br>
-		Alexa On/Off Preset: <input name="A0" class="m" type="number" min="0" max="250" required> <input name="A1" class="m" type="number" min="0" max="250" required><br>
-		Countdown-Over Preset: <input name="MC" class="m" type="number" min="0" max="250" required><br>
-		Timed-Light-Over Presets: <input name="MN" class="m" type="number" min="0" max="250" required><br>
-		<h3>Button actions</h3>
-		<table style="margin: 0 auto;" id="macros">
-			<thead>
-				<tr>
-					<td>push<br>switch</td>
-					<td>short<br>on-&gt;off</td>
-					<td>long<br>off-&gt;on</td>
-					<td>double<br>N/A</td>
-				</tr>
-			</thead>
-			<tbody>
-			</tbody>
-		</table>
-		<a href="https://kno.wled.ge/features/macros/#analog-button" target="_blank">Analog Button setup</a>
-		<h3>Time-controlled presets</h3>
-		<div style="display: inline-block">
-		<table id="TMT" style="min-width:330px;"></table>
+		<div class="card">
+			<h3>Location</h3>
+			<div class="f">Latitude: <span class="ctl"><select name="LTR"><option value="N">N</option><option value="S">S</option></select><input name="LT" type="number" class="xl" min="0" max="66.6" step="0.01"></span></div>
+			<div class="f">Longitude: <span class="ctl"><select name="LNR"><option value="E">E</option><option value="W">W</option></select><input name="LN" type="number" class="xl" min="0" max="180" step="0.01"></span></div>
+			<div class="ctr">
+				<button type="button" id="locbtn" onclick="getLatLon()">Get location</button>
+				<div><i>(opens new tab, only works in browser)</i></div>
+			</div>
+			<div id="sun" class="times"></div>
 		</div>
-		<hr>
+		<div class="card">
+			<h3>Clock</h3>
+			<label class="f">Analog Clock overlay: <input type="checkbox" name="OL" onchange="Cs()"></label>
+			<div id="cac">
+				<label class="f">First LED: <input name="O1" type="number" min="0" max="1024" required></label>
+				<label class="f">Last LED: <input name="O2" type="number" min="0" max="1024" required></label>
+				<label class="f">12h LED: <input name="OM" type="number" min="0" max="1024" required></label>
+				<label class="f">Show 5min marks: <input type="checkbox" name="O5"></label>
+				<label class="f">Seconds (as trail): <input type="checkbox" name="OS"></label>
+				<label class="f">Show clock overlay only if all LEDs are solid black: <input type="checkbox" name="OB"></label>
+			</div>
+			<label class="f">Countdown Mode: <input type="checkbox" name="CE"></label>
+			<h4>Countdown Goal</h4>
+			<div class="f">Date: <span class="ctl">20<input name="CY" class="xs" type="number" min="0" max="99" required>-<input name="CI" class="xs" type="number" min="1" max="12" required>-<input name="CD" class="xs" type="number" min="1" max="31" required></span></div>
+			<div class="f">Time: <span class="ctl"><input name="CH" class="xs" type="number" min="0" max="23" required>:<input name="CM" class="xs" type="number" min="0" max="59" required>:<input name="CS" class="xs" type="number" min="0" max="59" required></span></div>
+		</div>
+		<div class="card">
+			<h3>Macro presets</h3>
+			<div class="r"><b>Macros have moved!</b></div>
+			<i class="n">Presets now also can be used as macros to save both JSON and HTTP API commands.<br>
+			Just enter the preset ID below!<br>
+			Use 0 for the default action instead of a preset</i>
+			<div class="f">Alexa On/Off Preset: <span class="ctl"><input name="A0" class="m" type="number" min="0" max="250" required> <input name="A1" class="m" type="number" min="0" max="250" required></span></div>
+			<label class="f">Countdown-Over Preset: <input name="MC" class="m" type="number" min="0" max="250" required></label>
+			<label class="f">Timed-Light-Over Presets: <input name="MN" class="m" type="number" min="0" max="250" required></label>
+		</div>
+		<div class="card">
+			<h3>Button actions</h3>
+			<div class="tbl">
+			<table style="margin: 0 auto;" id="macros">
+				<thead>
+					<tr>
+						<td>push<br>switch</td>
+						<td>short<br>on-&gt;off</td>
+						<td>long<br>off-&gt;on</td>
+						<td>double<br>N/A</td>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+			</div>
+			<div class="r ctr"><a href="https://kno.wled.ge/features/macros/#analog-button" target="_blank">Analog Button setup</a></div>
+		</div>
+		<div class="card">
+			<h3>Time-controlled presets</h3>
+			<div class="tbl">
+			<table id="TMT" style="min-width:330px;"></table>
+			</div>
+		</div>
 		<button type="button" onclick="B()">Back</button><button type="submit">Save</button>
 	</form>
 </body>

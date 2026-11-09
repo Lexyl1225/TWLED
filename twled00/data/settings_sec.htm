@@ -41,43 +41,57 @@
 		<button type="button" onclick="B()">Back</button><button type="submit">Save</button><hr>
 		</div>
 		<h2>Security & Update setup</h2>
-		Settings PIN: <input type="password" id="PIN" name="PIN" size="4" maxlength="4" minlength="4" onkeydown="checkNum(this)" pattern="[0-9]*" inputmode="numeric" title="Please enter a 4 digit number"><br>
-		<div class="warn">&#9888; Unencrypted transmission. Be prudent when selecting PIN, do NOT use your banking, door, SIM, etc. pin!</div><br>
-		Lock wireless (OTA) software update: <input type="checkbox" name="NO"><br>
-		Passphrase: <input type="password" name="OP" maxlength="32"><br>
-		To enable OTA, for security reasons you need to also enter the correct password!<br>
-		The password should be changed when OTA is enabled.<br>
-		<b>Disable OTA when not in use, otherwise an attacker can reflash device software!</b><br>
-		<i>Settings on this page are only changeable if OTA lock is disabled!</i><br>
-		Deny access to WiFi settings if locked: <input type="checkbox" name="OW"><br><br>
-		Factory reset: <input type="checkbox" name="RS"><br>
-		All settings and presets will be erased.<br><br>
-		<div class="warn">&#9888; Unencrypted transmission. An attacker on the same network can intercept form data!</div>
-		<span id="OTA"><hr>
-		<h3>Software Update</h3>
-		<button type="button" onclick="U()">Manual OTA Update</button><br>
-		<div id="aOTA">Enable ArduinoOTA: <input type="checkbox" name="AO"></div>
-		Only allow update from same network/WiFi: <input type="checkbox" name="SU"><br>
-		<i class="warn">&#9888; If you are using multiple VLANs (i.e. IoT or guest network) either set PIN or disable this option.<br>
-			Disabling this option will make your device less secure.</i><br></span>
-		<hr id="backup">
-		<h3>Backup & Restore</h3>
-		<div class="warn">&#9888; Restoring presets/configuration will OVERWRITE your current presets/configuration.<br>
-		Incorrect upload or configuration may require a factory reset or re-flashing of your ESP.<br>
-		For security reasons, passwords are not backed up.</div>
-		<a class="btn lnk" id="bckcfg" href="/presets.json" download="presets">Backup presets</a><br>
-		<div>Restore presets<br><input type="file" name="data" accept=".json"> <button type="button" onclick="uploadFile(d.Sf.data,'/presets.json');">Upload</button><br></div><br>
-		<a class="btn lnk" id="bckpresets" href="/cfg.json" download="cfg">Backup configuration</a><br>
-		<div>Restore configuration<br><input type="file" name="data2" accept=".json"> <button type="button" onclick="uploadFile(d.Sf.data2,'/cfg.json');">Upload</button><br></div>
-		<hr>
-		<h3>About</h3>
-		<a href="https://github.com/wled-dev/WLED/" target="_blank">TWLED</a>&#32;version ##VERSION##<!-- Autoreplaced from package.json --><br><br>
-		<a href="https://kno.wled.ge/about/contributors/" target="_blank">Contributors, dependencies and special thanks</a><br>
-		A huge thank you to everyone who helped me create TWLED!<br><br>
-		(c) 2025 ENGR. ALEXANDER FERNANDEZ<br><br>
-		(c) 2016-2024 Christian Schwinne <br>
-		<i>Licensed under the <a href="https://github.com/wled-dev/WLED/blob/main/LICENSE" target="_blank">EUPL v1.2 license</a></i><br><br>
-		Installed version: <span class="sip">TWLED ##VERSION##</span><hr>
+		<div class="card">
+			<h3>Settings PIN</h3>
+			<label class="f">Settings PIN: <input type="password" id="PIN" name="PIN" size="4" maxlength="4" minlength="4" onkeydown="checkNum(this)" pattern="[0-9]*" inputmode="numeric" title="Please enter a 4 digit number"></label>
+			<div class="warn">&#9888; Unencrypted transmission. Be prudent when selecting PIN, do NOT use your banking, door, SIM, etc. pin!</div>
+		</div>
+		<div class="card">
+			<h3>OTA lock</h3>
+			<label class="f">Lock wireless (OTA) software update: <input type="checkbox" name="NO"></label>
+			<label class="f">Passphrase: <input type="password" name="OP" maxlength="32"></label>
+			<div class="r">To enable OTA, for security reasons you need to also enter the correct password!<br>
+			The password should be changed when OTA is enabled.</div>
+			<div class="r"><b>Disable OTA when not in use, otherwise an attacker can reflash device software!</b></div>
+			<i class="n">Settings on this page are only changeable if OTA lock is disabled!</i>
+			<label class="f">Deny access to WiFi settings if locked: <input type="checkbox" name="OW"></label>
+		</div>
+		<div class="card">
+			<h3>Factory reset</h3>
+			<div class="f">Factory reset: <input type="checkbox" name="RS"></div>
+			<div class="r">All settings and presets will be erased.</div>
+			<div class="warn">&#9888; Unencrypted transmission. An attacker on the same network can intercept form data!</div>
+		</div>
+		<div id="OTA" class="card">
+			<h3>Software Update</h3>
+			<div class="ctr"><button type="button" onclick="U()">Manual OTA Update</button></div>
+			<div id="aOTA"><label class="f">Enable ArduinoOTA: <input type="checkbox" name="AO"></label></div>
+			<label class="f">Only allow update from same network/WiFi: <input type="checkbox" name="SU"></label>
+			<i class="warn n">&#9888; If you are using multiple VLANs (i.e. IoT or guest network) either set PIN or disable this option.<br>
+				Disabling this option will make your device less secure.</i>
+		</div>
+		<div id="backup" class="card">
+			<h3>Backup & Restore</h3>
+			<div class="warn">&#9888; Restoring presets/configuration will OVERWRITE your current presets/configuration.<br>
+			Incorrect upload or configuration may require a factory reset or re-flashing of your ESP.<br>
+			For security reasons, passwords are not backed up.</div>
+			<h4>Presets</h4>
+			<a class="btn lnk" id="bckcfg" href="/presets.json" download="presets">Backup presets</a>
+			<div class="f">Restore presets <span class="ctl"><input type="file" name="data" accept=".json"> <button type="button" onclick="uploadFile(d.Sf.data,'/presets.json');">Upload</button></span></div>
+			<h4>Configuration</h4>
+			<a class="btn lnk" id="bckpresets" href="/cfg.json" download="cfg">Backup configuration</a>
+			<div class="f">Restore configuration <span class="ctl"><input type="file" name="data2" accept=".json"> <button type="button" onclick="uploadFile(d.Sf.data2,'/cfg.json');">Upload</button></span></div>
+		</div>
+		<div class="card">
+			<h3>About</h3>
+			<div class="r"><a href="https://github.com/wled-dev/WLED/" target="_blank">TWLED</a>&#32;version ##VERSION##<!-- Autoreplaced from package.json --></div>
+			<div class="r"><a href="https://kno.wled.ge/about/contributors/" target="_blank">Contributors, dependencies and special thanks</a><br>
+			A huge thank you to everyone who helped me create TWLED!</div>
+			<div class="r">(c) 2025 ENGR. ALEXANDER FERNANDEZ</div>
+			<div class="r">(c) 2016-2024 Christian Schwinne <br>
+			<i>Licensed under the <a href="https://github.com/wled-dev/WLED/blob/main/LICENSE" target="_blank">EUPL v1.2 license</a></i></div>
+			<div class="f">Installed version: <span class="sip">TWLED ##VERSION##</span></div>
+		</div>
 		<div id="toast"></div>
 		<button type="button" onclick="B()">Back</button><button type="submit">Save</button>
 	</form>

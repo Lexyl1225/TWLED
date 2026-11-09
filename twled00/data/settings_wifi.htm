@@ -112,16 +112,13 @@
 		function addWiFi(ssid="",pass="",bssid="",ip=0,gw=0,sn=0x00ffffff) { // little endian
 			var i = gId("wifi_entries").childNodes.length;
 			if (i >= maxNetworks) return;
-			var b = `<div id="net${i}"><hr class="sml">
-Network name (SSID${i==0?", empty to not connect":""}):<br><input type="text" id="CS${i}" name="CS${i}" maxlength="32" value="${ssid}" ${i>0?"required":""}><br>
-Network password:<br><input type="password" name="PW${i}" maxlength="64" value="${pass}"><br>
-BSSID (optional):<br><input type="text" id="BS${i}" name="BS${i}" maxlength="12" value="${bssid}"><br>
-Static IP (leave at 0.0.0.0 for DHCP)${i==0?"<br>Also used by Ethernet":""}:<br>
-<input name="IP${i}0" type="number" class="s" min="0" max="255" value="${ip&0xFF}" required>.<input name="IP${i}1" type="number" class="s" min="0" max="255" value="${(ip>>8)&0xFF}" required>.<input name="IP${i}2" type="number" class="s" min="0" max="255" value="${(ip>>16)&0xFF}" required>.<input name="IP${i}3" type="number" class="s" min="0" max="255" value="${(ip>>24)&0xFF}" required><br>
-Static gateway:<br>
-<input name="GW${i}0" type="number" class="s" min="0" max="255" value="${gw&0xFF}" required>.<input name="GW${i}1" type="number" class="s" min="0" max="255" value="${(gw>>8)&0xFF}" required>.<input name="GW${i}2" type="number" class="s" min="0" max="255" value="${(gw>>16)&0xFF}" required>.<input name="GW${i}3" type="number" class="s" min="0" max="255" value="${(gw>>24)&0xFF}" required><br>
-Static subnet mask:<br>
-<input name="SN${i}0" type="number" class="s" min="0" max="255" value="${sn&0xFF}" required>.<input name="SN${i}1" type="number" class="s" min="0" max="255" value="${(sn>>8)&0xFF}" required>.<input name="SN${i}2" type="number" class="s" min="0" max="255" value="${(sn>>16)&0xFF}" required>.<input name="SN${i}3" type="number" class="s" min="0" max="255" value="${(sn>>24)&0xFF}" required></div>`;
+			var b = `<div id="net${i}" class="sub">
+<label class="f">Network name (SSID${i==0?", empty to not connect":""}):<input type="text" id="CS${i}" name="CS${i}" maxlength="32" value="${ssid}" ${i>0?"required":""}></label>
+<label class="f">Network password:<input type="password" name="PW${i}" maxlength="64" value="${pass}"></label>
+<label class="f">BSSID (optional):<input type="text" id="BS${i}" name="BS${i}" maxlength="12" value="${bssid}"></label>
+<div class="f"><span>Static IP (leave at 0.0.0.0 for DHCP)${i==0?"<br>Also used by Ethernet":""}:</span><span class="ctl"><input name="IP${i}0" type="number" class="s" min="0" max="255" value="${ip&0xFF}" required>.<input name="IP${i}1" type="number" class="s" min="0" max="255" value="${(ip>>8)&0xFF}" required>.<input name="IP${i}2" type="number" class="s" min="0" max="255" value="${(ip>>16)&0xFF}" required>.<input name="IP${i}3" type="number" class="s" min="0" max="255" value="${(ip>>24)&0xFF}" required></span></div>
+<div class="f">Static gateway:<span class="ctl"><input name="GW${i}0" type="number" class="s" min="0" max="255" value="${gw&0xFF}" required>.<input name="GW${i}1" type="number" class="s" min="0" max="255" value="${(gw>>8)&0xFF}" required>.<input name="GW${i}2" type="number" class="s" min="0" max="255" value="${(gw>>16)&0xFF}" required>.<input name="GW${i}3" type="number" class="s" min="0" max="255" value="${(gw>>24)&0xFF}" required></span></div>
+<div class="f">Static subnet mask:<span class="ctl"><input name="SN${i}0" type="number" class="s" min="0" max="255" value="${sn&0xFF}" required>.<input name="SN${i}1" type="number" class="s" min="0" max="255" value="${(sn>>8)&0xFF}" required>.<input name="SN${i}2" type="number" class="s" min="0" max="255" value="${(sn>>16)&0xFF}" required>.<input name="SN${i}3" type="number" class="s" min="0" max="255" value="${(sn>>24)&0xFF}" required></span></div></div>`;
 			gId("wifi_entries").insertAdjacentHTML("beforeend", b);
 			btnWiFi(i+1);
 		}
@@ -187,74 +184,91 @@ Static subnet mask:<br>
 		<button type="button" onclick="B()">Back</button><button type="submit">Save & Connect</button><hr>
 		</div>
 		<h2>WiFi setup</h2>
-		<h3>Connect to existing network</h3>
-		<button type="button" id="scan" onclick="N()">Scan</button><br>
-		<div id="wifi">
-			Wireless networks
-			<div id="wifi_entries"></div>
-			<hr class="sml">
-			<button type="button" id="wifi_add" onclick="addWiFi()">+</button>
-			<button type="button" id="wifi_rem" onclick="remWiFi()">-</button><br>
-		</div>
-		DNS server address:<br>
-		<input name="D0" type="number" class="s" min="0" max="255" required>.<input name="D1" type="number" class="s" min="0" max="255" required>.<input name="D2" type="number" class="s" min="0" max="255" required>.<input name="D3" type="number" class="s" min="0" max="255" required><br>
-		<br>
-		mDNS address (leave empty for no mDNS):<br>
-		http:// <input type="text" name="CM" maxlength="32"> .local<br>
-		Client IP: <span class="sip"> Not connected </span> <br>
-		<h3>Configure Access Point</h3>
-		AP SSID (leave empty for no AP):<br> <input type="text" name="AS" maxlength="32"><br>
-		Hide AP name: <input type="checkbox" name="AH"><br>
-		AP password (leave empty for open):<br> <input type="password" name="AP" maxlength="63" pattern="(.{8,63})|()" title="Empty or min. 8 characters"><br>
-		Access Point WiFi channel: <input name="AC" type="number" class="xs" min="1" max="13" required><br>
-		AP opens:
-		<select name="AB">
-			<option value="0">No connection after boot</option>
-			<option value="1">Disconnected</option>
-			<option value="2">Always</option>
-			<option value="3">Never (not recommended)</option>
-			<option value="4">Temporary (no connection after boot)</option>
-		</select><br>
-		AP IP: <span class="sip"> Not active </span><br>
-		<h3>Experimental</h3>
-		Force 802.11g mode (ESP8266 only): <input type="checkbox" name="FG"><br>
-		Disable WiFi sleep: <input type="checkbox" name="WS"><br>
-		<i>Can help with connectivity issues and Audioreactive sync.<br>
-		Disabling WiFi sleep increases power consumption.</i><br>
-		<div id="tx">TX power: <select name="TX">
-			<option value="78">19.5 dBm</option>
-			<option value="76">19 dBm</option>
-			<option value="74">18.5 dBm</option>
-			<option value="68">17 dBm</option>
-			<option value="60">15 dBm</option>
-			<option value="52">13 dBm</option>
-			<option value="44">11 dBm</option>
-			<option value="34">8.5 dBm</option>
-			<option value="28">7 dBm</option>
-			<option value="20">5 dBm</option>
-			<option value="8">2 dBm</option>
-		</select><br>
-		<i class="warn">WARNING: Modifying TX power may render device unreachable.</i>
-		</div>
-
-		<h3>ESP-NOW Wireless</h3>
-		<div id="NoESPNOW" class="hide">
-			<i class="warn">This firmware build does not include ESP-NOW support.<br></i>
-		</div>
-		<div id="ESPNOW">
-			Enable ESP-NOW: <input type="checkbox" name="RE" onchange="tE()"><br>
-			<i>Listen for events over ESP-NOW<br>
-			Keep disabled if not using a remote or ESP-NOW sync, increases power consumption.<br></i>
-			<div id="rlc">
-				Last device seen: <span class="rlid" id="ld">None</span>
-				<button type="button" class="sml" id="+" onclick="aR('RM'+rC,gId('ld').textContent)">+</button><br>
-				Linked MACs (10 max):<br>
-				<div id="rml">
+		<div class="card">
+			<h3>Connect to existing network</h3>
+			<div class="ctr"><button type="button" id="scan" onclick="N()">Scan</button></div>
+			<div id="wifi">
+				Wireless networks
+				<div id="wifi_entries"></div>
+				<div class="ctr">
+					<button type="button" id="wifi_add" onclick="addWiFi()">+</button>
+					<button type="button" id="wifi_rem" onclick="remWiFi()">-</button>
 				</div>
 			</div>
 		</div>
-
-		<div id="ethd">
+		<div class="card">
+			<h3>Network</h3>
+			<div class="f">DNS server address:
+				<span class="ctl"><input name="D0" type="number" class="s" min="0" max="255" required>.<input name="D1" type="number" class="s" min="0" max="255" required>.<input name="D2" type="number" class="s" min="0" max="255" required>.<input name="D3" type="number" class="s" min="0" max="255" required></span>
+			</div>
+			<label class="f">mDNS address (leave empty for no mDNS):
+				<span class="ctl">http:// <input type="text" name="CM" maxlength="32"> .local</span>
+			</label>
+			<div class="f">Client IP: <span class="sip"> Not connected </span></div>
+		</div>
+		<div class="card">
+			<h3>Configure Access Point</h3>
+			<label class="f">AP SSID (leave empty for no AP): <input type="text" name="AS" maxlength="32"></label>
+			<label class="f">Hide AP name: <input type="checkbox" name="AH"></label>
+			<label class="f">AP password (leave empty for open): <input type="password" name="AP" maxlength="63" pattern="(.{8,63})|()" title="Empty or min. 8 characters"></label>
+			<label class="f">Access Point WiFi channel: <input name="AC" type="number" class="xs" min="1" max="13" required></label>
+			<label class="f">AP opens:
+				<select name="AB">
+					<option value="0">No connection after boot</option>
+					<option value="1">Disconnected</option>
+					<option value="2">Always</option>
+					<option value="3">Never (not recommended)</option>
+					<option value="4">Temporary (no connection after boot)</option>
+				</select>
+			</label>
+			<div class="f">AP IP: <span class="sip"> Not active </span></div>
+		</div>
+		<div class="card">
+			<h3>Experimental</h3>
+			<label class="f">Force 802.11g mode (ESP8266 only): <input type="checkbox" name="FG"></label>
+			<label class="f">Disable WiFi sleep: <input type="checkbox" name="WS"></label>
+			<i class="n">Can help with connectivity issues and Audioreactive sync.<br>
+			Disabling WiFi sleep increases power consumption.</i>
+			<div id="tx">
+				<label class="f">TX power:
+					<select name="TX">
+						<option value="78">19.5 dBm</option>
+						<option value="76">19 dBm</option>
+						<option value="74">18.5 dBm</option>
+						<option value="68">17 dBm</option>
+						<option value="60">15 dBm</option>
+						<option value="52">13 dBm</option>
+						<option value="44">11 dBm</option>
+						<option value="34">8.5 dBm</option>
+						<option value="28">7 dBm</option>
+						<option value="20">5 dBm</option>
+						<option value="8">2 dBm</option>
+					</select>
+				</label>
+				<i class="warn n">WARNING: Modifying TX power may render device unreachable.</i>
+			</div>
+		</div>
+		<div class="card">
+			<h3>ESP-NOW Wireless</h3>
+			<div id="NoESPNOW" class="hide">
+				<i class="warn n">This firmware build does not include ESP-NOW support.</i>
+			</div>
+			<div id="ESPNOW">
+				<label class="f">Enable ESP-NOW: <input type="checkbox" name="RE" onchange="tE()"></label>
+				<i class="n">Listen for events over ESP-NOW<br>
+				Keep disabled if not using a remote or ESP-NOW sync, increases power consumption.</i>
+				<div id="rlc">
+					<div class="f">Last device seen:
+						<span class="ctl"><span class="rlid" id="ld">None</span>
+						<button type="button" class="sml" id="+" onclick="aR('RM'+rC,gId('ld').textContent)">+</button></span>
+					</div>
+					Linked MACs (10 max):
+					<div id="rml">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="ethd" class="card">
 			<h3>Ethernet Type</h3>
 			<select name="ETH">
 				<option value="0">None</option>
@@ -270,9 +284,8 @@ Static subnet mask:<br>
 				<option value="5">TwilightLord-ESP32</option>
 				<option value="3">WESP32</option>
 				<option value="1">WT32-ETH01</option>
-			</select><br><br>
+			</select>
 		</div>
-		<hr>
 		<button type="button" onclick="B()">Back</button><button type="submit">Save & Connect</button>
 	</form>
 </body>
