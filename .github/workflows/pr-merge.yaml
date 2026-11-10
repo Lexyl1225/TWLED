@@ -30,9 +30,10 @@
             PR_TITLE: ${{ github.event.pull_request.title }}
             PR_URL: ${{ github.event.pull_request.html_url }}
             ACTOR: ${{ github.actor }}
+            DISCORD_WEBHOOK_BETA_TESTERS: ${{ secrets['DISCORD_WEBHOOK_BETA_TESTERS'] }}
           run: |
             jq -n \
               --arg content "Pull Request #${PR_NUMBER} \"${PR_TITLE}\" merged by ${ACTOR}
             ${PR_URL} . It will be included in the next nightly builds, please test" \
               '{content: $content}' \
-              | curl -H "Content-Type: application/json" -d @- ${{ secrets.DISCORD_WEBHOOK_BETA_TESTERS }}
+              | curl -H "Content-Type: application/json" -d @- "$DISCORD_WEBHOOK_BETA_TESTERS"

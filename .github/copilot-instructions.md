@@ -1,4 +1,4 @@
-## WLED — Copilot / AI Agent Instructions (concise)
+## TWLED — Copilot / AI Agent Instructions (concise)
 
 Purpose: give an AI coding agent the exact, repository-specific knowledge needed to be productive fast.
 
@@ -60,9 +60,9 @@ pio run -e esp32dev
 - Tests and tool examples: `tools/cdata-test.js`, `test/` folder.
 
 If anything in these instructions is unclear or you want more detail (examples for a specific change type, or a checklist for PR validation), tell me which area to expand and I will iterate.
-# WLED - ESP32/ESP8266 LED Controller Firmware
+# TWLED - ESP32/ESP8266 LED Controller Firmware
 
-WLED is a fast and feature-rich implementation of an ESP32 and ESP8266 webserver to control NeoPixel (WS2812B, WS2811, SK6812) LEDs and SPI-based chipsets. The project consists of C++ firmware for microcontrollers and a modern web interface.
+TWLED is a fast and feature-rich implementation of an ESP32 and ESP8266 webserver to control NeoPixel (WS2812B, WS2811, SK6812) LEDs and SPI-based chipsets. The project consists of C++ firmware for microcontrollers and a modern web interface.
 
 Always reference these instructions first and fallback to search or bash commands only when you encounter unexpected information that does not match the info here.
 
@@ -117,7 +117,7 @@ The build has two main phases:
 
 ### Web UI Testing
 - **ALWAYS validate web UI changes manually**:
-  - Start local server: `cd wled00/data && python3 -m http.server 8080`
+  - Start local server: `cd twled00/data && python3 -m http.server 8080`
   - Open `http://localhost:8080/index.htm` in browser
   - Test basic functionality: color picker, effects, settings pages
 - **Check for JavaScript errors** in browser console
@@ -141,7 +141,7 @@ After making changes to web UI, always test:
 
 ### Repository Structure
 ```
-wled00/                 # Main firmware source (C++)
+twled00/                 # Main firmware source (C++)
   ├── data/            # Web interface files 
   │   ├── index.htm    # Main UI
   │   ├── settings*.htm # Settings pages
@@ -157,21 +157,21 @@ package.json           # Node.js dependencies and scripts
 ```
 
 ### Key Files and Their Purpose
-- `wled00/data/index.htm` - Main web interface
-- `wled00/data/settings*.htm` - Configuration pages  
+- `twled00/data/index.htm` - Main web interface
+- `twled00/data/settings*.htm` - Configuration pages  
 - `tools/cdata.js` - Converts web files to C++ headers
-- `wled00/wled.h` - Main firmware configuration
+- `twled00/wled.h` - Main firmware configuration
 - `platformio.ini` - Hardware build targets and settings
 
 ### Development Workflow
 1. **For web UI changes**:
-   - Edit files in `wled00/data/`
+   - Edit files in `twled00/data/`
    - Run `npm run build` to regenerate headers
    - Test with local HTTP server
    - Run `npm test` to validate build system
 
 2. **For firmware changes**:
-   - Edit files in `wled00/` (but NOT `html_*.h` files)
+   - Edit files in `twled00/` (but NOT `html_*.h` files)
    - Ensure web UI is built first (`npm run build`)
    - Build firmware: `pio run -e [target]`
    - Flash to device: `pio run -e [target] --target upload`
@@ -203,14 +203,14 @@ package.json           # Node.js dependencies and scripts
 - **Node.js version issues**: Ensure Node.js 20+ is installed (check `.nvmrc`)
 
 ### When Things Go Wrong
-- **Clear generated files**: `rm -f wled00/html_*.h` then rebuild
+- **Clear generated files**: `rm -f twled00/html_*.h` then rebuild
 - **Force web UI rebuild**: `npm run build -- --force` or `npm run build -- -f`
 - **Clean PlatformIO cache**: `pio run --target clean`
 - **Reinstall dependencies**: `rm -rf node_modules && npm install`
 
 ## Important Notes
 
-- **DO NOT edit `wled00/html_*.h` files** - they are auto-generated
+- **DO NOT edit `twled00/html_*.h` files** - they are auto-generated
 - **Always commit both source files AND generated html_*.h files**
 - **Web UI must be built before firmware compilation**
 - **Test web interface manually after any web UI changes**

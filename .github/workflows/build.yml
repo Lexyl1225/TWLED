@@ -16,7 +16,7 @@ jobs:
         python-version: '3.12'
         cache: 'pip'
     - name: Install PlatformIO
-      run: pip install -r requirements.txt
+      run: pip install -r twled_requirements.txt
     - name: Get default environments
       id: envs
       run: |
@@ -43,7 +43,7 @@ jobs:
     - run: |
         npm ci
         VERSION=`date +%y%m%d0`
-        sed -i -r -e "s/define VERSION .+/define VERSION $VERSION/" twled00/wled.h
+        sed -i -r -e "s/define VERSION .+/define VERSION $VERSION/" twled00/twled.h
     - name: Cache PlatformIO
       uses: actions/cache@v4
       with:
@@ -56,10 +56,10 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-          python-version: '3.12'
+          python-version: '3.13'
           cache: 'pip'
     - name: Install PlatformIO
-      run: pip install -r requirements.txt
+      run: pip install -r twled_requirements.txt
 
     - name: Build firmware
       run: pio run -e ${{ matrix.environment }}
