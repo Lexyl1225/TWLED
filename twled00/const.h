@@ -615,7 +615,7 @@ static_assert(TWLED_MAX_BUSSES <= 32, "TWLED_MAX_BUSSES exceeds hard limit");
   #define DEFAULT_LED_PIN 18   // GPIO 16 -aligns with GPIO2 (D4) on Wemos D1 mini32 compatible boards (if it is unusable it will be reassigned in WS2812FX::finalizeInit())
 #endif
 #define DEFAULT_LED_TYPE TYPE_WS2812_RGB
-#define DEFAULT_LED_COUNT 700
+#define DEFAULT_LED_COUNT 300
 
 #define INTERFACE_UPDATE_COOLDOWN 1000 // time in ms to wait between websockets, alexa, and MQTT updates
 
