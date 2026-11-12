@@ -26,7 +26,7 @@ jobs:
         uses: janheinrichmerker/action-github-changelog-generator@v2.3
         with:
           token: ${{ secrets.GITHUB_TOKEN }} 
-          sinceTag: v0.15.0
+          sinceTag: v0.17.1
           # Exclude issues that were closed without resolution from changelog
           excludeLabels: 'stale,wontfix,duplicate,invalid'
       - name: Update Nightly Release
