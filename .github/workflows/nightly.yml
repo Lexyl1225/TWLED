@@ -14,6 +14,10 @@ jobs:
     name: Deploy nightly
     runs-on: ubuntu-latest
     needs: twled_build
+    permissions:
+      contents: write # create/update the nightly tag and release
+    env:
+      HAS_PAT_PUBLIC: ${{ secrets.PAT_PUBLIC != '' }} # only true/false, the secret itself is not exposed
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v4
@@ -42,6 +46,8 @@ jobs:
             *.bin
             *.bin.gz
       - name: Repository Dispatch
+        # needs a PAT_PUBLIC secret with access to the WebInstaller repository; skipped when it is not set
+        if: env.HAS_PAT_PUBLIC == 'true'
         uses: peter-evans/repository-dispatch@v3
         with:
           repository: twled/TWLED-WebInstaller

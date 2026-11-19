@@ -14,6 +14,8 @@ jobs:
     name: Create Release
     runs-on: ubuntu-latest
     needs: twled_build
+    permissions:
+      contents: write # create the draft release
     steps:
     - uses: actions/download-artifact@v4
       with:
