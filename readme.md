@@ -55,7 +55,7 @@ See the [documentation on our official site](https://kno.wled.ge)!
 [On this page](https://kno.wled.ge/basics/tutorials/) you can find excellent tutorials and tools to help you get your new project up and running!
 
 ## 🖼️ User interface
-<img src="/images/macbook-pro-space-gray-on-the-wooden-table.jpg" width="50%"><img src="/images/walking-with-iphone-x.jpg" width="50%">
+<img src="/images/twled1.png" width="50%"><img src="/images/twled2.png" width="50%">
 
 ## 💾 Compatible hardware
 
